@@ -109,6 +109,22 @@
     margin-top:8px;padding-top:12px;font-size:19px;font-weight:700;color:var(--brand-dark)}
   .totline .v{font-variant-numeric:tabular-nums;white-space:nowrap}
 
+  /* ---- Proyección ---- */
+  .chartwrap{overflow-x:auto;-webkit-overflow-scrolling:touch;margin:6px 0 2px}
+  .chart{display:block;width:100%;min-width:520px;height:auto}
+  .chart .gr{stroke:var(--line);stroke-width:1}
+  .chart .lbl{font:600 11px system-ui,sans-serif;fill:var(--muted)}
+  .chart .val{font:700 11px system-ui,sans-serif;fill:var(--brand-dark)}
+  .chart .ejeY{font:600 10.5px system-ui,sans-serif;fill:var(--muted)}
+  .leyenda{display:flex;flex-wrap:wrap;gap:14px;margin:8px 0 0;font-size:13px;color:var(--muted)}
+  .leyenda i{display:inline-block;width:12px;height:12px;border-radius:3px;
+    margin-right:5px;vertical-align:-1px}
+  .hitos{display:grid;gap:10px;margin:14px 0 0}
+  @media(min-width:700px){.hitos{grid-template-columns:repeat(3,1fr)}}
+  .hito{background:var(--brand-soft);border-radius:11px;padding:12px 14px}
+  .hito b{display:block;font-size:22px;color:var(--brand-dark);line-height:1.15}
+  .hito span{font-size:13px;color:var(--muted)}
+
   .fotos{display:grid;gap:12px;grid-template-columns:repeat(auto-fill,minmax(160px,1fr))}
   .foto{background:#fff;border:1px solid var(--line);border-radius:11px;overflow:hidden}
   .foto img{width:100%;height:140px;object-fit:cover;display:block;background:#eee}
@@ -152,6 +168,7 @@
   <a href="#necesito">Lo que hace falta</a>
   <a href="#precios">Precios</a>
   <a href="#presupuesto">Presupuesto</a>
+  <a href="#proyeccion">Proyección</a>
   <a href="#parcela">La parcela</a>
   <a href="#plantacion">Plantación</a>
   <a href="#riego">Riego</a>
@@ -307,6 +324,120 @@
 
     <div class="callout" style="margin-bottom:0">
       <p id="notaPresupuesto"></p>
+    </div>
+  </div>
+</section>
+
+<!-- ============ PROYECCIÓN ============ -->
+<section id="proyeccion">
+  <h2>Proyección de crecimiento y cosecha</h2>
+  <p class="lead">Cuánto tarda el huerto en producir, cuántos kilos daría cada
+     planta año por año, y cuándo se recupera lo invertido. Los kilos salen de
+     datos comerciales de México (el mayor productor de limón persa); el precio
+     de venta y la inversión salen de la hoja de precios.</p>
+
+  <div class="callout danger">
+    <p><b>Esto es una proyección, no una promesa.</b> Las cifras vienen de
+      huertas comerciales mexicanas bien manejadas y con agua buena. En Naiguatá
+      todavía no sabemos la <b>calidad del agua</b> ni la <b>salinidad</b>, y ambas
+      pueden bajar el rendimiento de forma importante. Sirve para decidir el orden
+      de magnitud y comparar escenarios — no para comprometer dinero sin hablar
+      antes con un agrónomo o un vivero local.</p>
+  </div>
+
+  <div class="card">
+    <div class="calc">
+      <div>
+        <label for="pPlantas">Número de plantas</label>
+        <input type="number" id="pPlantas" value="100" min="1" max="10000" step="1">
+        <div class="hint">Se sincroniza con el presupuesto de arriba.</div>
+      </div>
+      <div>
+        <label for="pEscenario">Escenario de rendimiento (árbol maduro)</label>
+        <select id="pEscenario">
+          <option value="35">Conservador — 35 kg por árbol</option>
+          <option value="55" selected>Medio — 55 kg por árbol</option>
+          <option value="90">Optimista — 90 kg por árbol</option>
+          <option value="custom">Personalizado…</option>
+        </select>
+        <div class="hint">El árbol maduro es el de 7 años en adelante.</div>
+      </div>
+      <div id="wrapCustom" hidden>
+        <label for="pKgMaduro">Kg por árbol maduro (personalizado)</label>
+        <input type="number" id="pKgMaduro" value="55" min="1" max="250" step="1">
+        <div class="hint">Rango observado en la literatura: 32 a 215 kg.</div>
+      </div>
+      <div>
+        <label for="pPrecio">Precio de venta ($/kg)</label>
+        <input type="number" id="pPrecio" value="0" min="0" max="20" step="0.05">
+        <div class="hint" id="hintPrecio">Está en la hoja como dato pendiente.</div>
+      </div>
+      <div>
+        <label for="pMerma">Pérdida de plantas el primer año (%)</label>
+        <input type="number" id="pMerma" value="10" min="0" max="50" step="1">
+        <div class="hint">Plantas que no prenden. Se reponen o se pierden.</div>
+      </div>
+      <div>
+        <label for="pGasto">Gasto anual de mantenimiento ($)</label>
+        <input type="number" id="pGasto" value="0" min="0" step="10">
+        <div class="hint">Agua, energía, abono y mano de obra al año. 0 = no contarlo.</div>
+      </div>
+    </div>
+
+    <div class="hitos" id="hitos"></div>
+
+    <h3>Kilos por año</h3>
+    <div class="chartwrap"><svg id="grafico" class="chart" viewBox="0 0 760 300"
+         preserveAspectRatio="xMidYMid meet" role="img"
+         aria-label="Proyección de kilos por año"></svg></div>
+    <div class="leyenda">
+      <span><i style="background:#cfd8c8"></i>Sin cosecha</span>
+      <span><i style="background:#a8c97f"></i>Producción parcial</span>
+      <span><i style="background:#4a7c22"></i>Producción plena</span>
+    </div>
+
+    <h3>Año por año</h3>
+    <div class="tablewrap"><table id="tablaProy"></table></div>
+
+    <div class="callout" style="margin-bottom:0">
+      <p id="notaProy"></p>
+    </div>
+  </div>
+
+  <h3>De dónde salen estos números</h3>
+  <div class="grid c2">
+    <div class="card">
+      <h3 style="margin-top:0">La curva de producción</h3>
+      <p>El árbol entra en producción después del segundo año y alcanza su máximo
+        entre el sexto y el séptimo: <b>25 % del máximo en el año 3</b>, 30 % en
+        el 4, 50 % en el 5 y 100 % entre el 6 y el 7. El valor del año 6 (80 %)
+        es una interpolación nuestra entre el 50 % del año 5 y el 100 % del 7.</p>
+    </div>
+    <div class="card">
+      <h3 style="margin-top:0">Los kilos por árbol</h3>
+      <p>A los 7 años, huertas mexicanas de alta densidad dan <b>50 a 56 kg por
+        árbol</b> (666 a 1000 árboles/ha). En huertas maduras de 11 años a menor
+        densidad (4×6 m, 417 árboles/ha) se han medido <b>140 a 215 kg por árbol</b>
+        según el patrón, con muy buen manejo. Un valor máximo comúnmente citado es
+        32 kg, y un árbol bien cuidado puede pasar de 100 kg.</p>
+      <p class="hint">Por eso los tres escenarios: la horquilla real es enorme y
+        depende del patrón, la densidad, el agua y el manejo.</p>
+    </div>
+    <div class="card">
+      <h3 style="margin-top:0">Por hectárea, para comparar</h3>
+      <p>Sistema convencional (357 árboles/ha): <b>18 a 25 toneladas/ha</b>.
+        Alta densidad: <b>38 a 50 toneladas/ha</b>. Sirve para contrastar si el
+        número que da esta proyección es razonable o está fuera de rango.</p>
+    </div>
+    <div class="card">
+      <h3 style="margin-top:0">Lo que esta proyección NO incluye</h3>
+      <ul class="clean" style="margin-top:0">
+        <li>El efecto de la <b>salinidad</b> del agua de la costa — desconocido y
+          potencialmente grave.</li>
+        <li>Pérdidas por plagas o enfermedades (HLB, <i>Phytophthora</i>).</li>
+        <li>Variación de precio entre temporada alta y baja.</li>
+        <li>El costo del dinero inmovilizado durante los años sin ingreso.</li>
+      </ul>
     </div>
   </div>
 </section>
@@ -908,6 +1039,11 @@ function calcular(){
           '<span class="v">' + usd(total) + '</span></div>';
   document.getElementById('totales').innerHTML = html;
 
+  // La proyección usa esta inversión para calcular cuándo se recupera.
+  ULTIMO_CAPEX = total;
+  const pP = document.getElementById('pPlantas');
+  if (pP && !pP.dataset.tocado) { pP.value = n; proyectar(); }
+
   // Nota de contexto: área, agua y lo que falta.
   const areaM2 = n * marco * marco;
   const areaHa = areaM2 / 10000;
@@ -926,11 +1062,204 @@ function calcular(){
   document.getElementById('notaPresupuesto').innerHTML = nota;
 }
 
+/* ================= PROYECCIÓN DE COSECHA =================
+   Curva de entrada en producción, en % del rendimiento del árbol maduro.
+   Fuente: literatura comercial mexicana — 25 % en el año 3, 30 % en el 4,
+   50 % en el 5 y 100 % entre el 6 y el 7. El 80 % del año 6 es interpolación
+   nuestra entre el 50 % del 5 y el 100 % del 7 (queda marcado en la tabla). */
+const CURVA = [0, 0, 0.25, 0.30, 0.50, 0.80, 1, 1, 1, 1];
+const ANIO_INTERPOLADO = 6;
+
+let ULTIMO_CAPEX = 0;
+
+/** kg por árbol maduro según el escenario elegido. */
+function kgMaduro(){
+  const sel = document.getElementById('pEscenario').value;
+  return sel === 'custom'
+    ? (parseFloat(document.getElementById('pKgMaduro').value) || 0)
+    : parseFloat(sel);
+}
+
+function proyectar(){
+  const n       = Math.max(1, parseInt(document.getElementById('pPlantas').value) || 0);
+  const kgMax   = kgMaduro();
+  const precio  = parseFloat(document.getElementById('pPrecio').value)  || 0;
+  const merma   = (parseFloat(document.getElementById('pMerma').value)  || 0) / 100;
+  const gasto   = parseFloat(document.getElementById('pGasto').value)   || 0;
+  const vivas   = Math.round(n * (1 - merma));
+
+  const filas = CURVA.map((pct, i) => {
+    const anio    = i + 1;
+    const kgArbol = kgMax * pct;
+    const kgTotal = kgArbol * vivas;
+    return {anio, pct, kgArbol, kgTotal, ingreso: kgTotal * precio};
+  });
+
+  // Flujo acumulado: se arranca en negativo con la inversión inicial.
+  let acum = -ULTIMO_CAPEX;
+  let anioRecupera = null;
+  filas.forEach(f => {
+    f.neto = f.ingreso - gasto;
+    acum += f.neto;
+    f.acum = acum;
+    if (anioRecupera === null && acum >= 0 && precio > 0) anioRecupera = f.anio;
+  });
+
+  const primera = filas.find(f => f.kgTotal > 0);
+  const plena   = filas.find(f => f.pct >= 1);
+
+  // --- Hitos ---
+  document.getElementById('hitos').innerHTML =
+    hito(primera ? 'Año ' + primera.anio : '—', 'Primera cosecha',
+         primera ? Math.round(primera.kgTotal).toLocaleString('es-VE') + ' kg' : '') +
+    hito(plena ? 'Año ' + plena.anio : '—', 'Producción plena',
+         plena ? Math.round(plena.kgTotal).toLocaleString('es-VE') + ' kg al año' : '') +
+    hito(anioRecupera ? 'Año ' + anioRecupera : '—', 'Se recupera la inversión',
+         precio > 0
+           ? (anioRecupera ? 'con ' + usd(ULTIMO_CAPEX) + ' invertidos'
+                           : 'no se recupera en 10 años')
+           : 'falta el precio de venta');
+
+  dibujar(filas);
+  tablaProyeccion(filas, precio, gasto);
+
+  // --- Nota ---
+  const totalDecada = filas.reduce((s, f) => s + f.kgTotal, 0);
+  let nota = '<b>En 10 años</b> el huerto daría unos <b>' +
+    Math.round(totalDecada).toLocaleString('es-VE') + ' kg</b> en total, contando ' +
+    vivas + ' plantas vivas' + (merma ? ' (tras perder el ' + Math.round(merma*100) + ' % el primer año)' : '') + '.';
+  if (precio > 0){
+    nota += ' A ' + usd(precio) + ' el kilo son <b>' +
+      usd(filas.reduce((s, f) => s + f.ingreso, 0)) + '</b> de ingreso bruto.';
+  } else {
+    nota += ' <b>Falta el precio de venta</b> para poder decir si eso es rentable — ' +
+      'es la fila "Precio de venta del limón persa" de la hoja, todavía sin llenar.';
+  }
+  nota += '<br><br>Recuerda que los <b>dos primeros años no entra nada</b>: hay que ' +
+    'sostener el riego y el mantenimiento sin ingreso.';
+  if (precio > 0 && gasto === 0){
+    nota += '<br><br>⚠ <b>El año de recuperación está inflado:</b> tienes el gasto ' +
+      'anual en 0, así que la cuenta ignora agua, energía, abono y mano de obra. ' +
+      'Pon una cifra aunque sea aproximada para que el número signifique algo.';
+  }
+  document.getElementById('notaProy').innerHTML = nota;
+}
+
+function hito(valor, titulo, pie){
+  return '<div class="hito"><b>' + esc(valor) + '</b>' +
+         '<span>' + esc(titulo) + (pie ? ' · ' + esc(pie) : '') + '</span></div>';
+}
+
+/** Gráfico de barras en SVG puro (sin librerías). */
+function dibujar(filas){
+  const svg = document.getElementById('grafico');
+  const W = 760, H = 300, ml = 62, mr = 12, mt = 14, mb = 42;
+  const ancho = W - ml - mr, alto = H - mt - mb;
+  const maxKg = Math.max(...filas.map(f => f.kgTotal), 1);
+
+  // Escala "bonita": redondea el tope hacia arriba.
+  const paso = Math.pow(10, Math.floor(Math.log10(maxKg))) / 2;
+  const tope = Math.ceil(maxKg / paso) * paso || 1;
+
+  const bw = ancho / filas.length;
+  let s = '';
+
+  // Rejilla y eje Y
+  for (let i = 0; i <= 4; i++){
+    const y = mt + alto - (alto * i / 4);
+    const v = tope * i / 4;
+    s += `<line class="gr" x1="${ml}" y1="${y}" x2="${ml + ancho}" y2="${y}"/>`;
+    s += `<text class="ejeY" x="${ml - 8}" y="${y + 3.5}" text-anchor="end">` +
+         `${Math.round(v).toLocaleString('es-VE')}</text>`;
+  }
+  s += `<text class="ejeY" x="${ml - 8}" y="${mt - 3}" text-anchor="end">kg</text>`;
+
+  filas.forEach((f, i) => {
+    const h = (f.kgTotal / tope) * alto;
+    const x = ml + i * bw + bw * 0.18;
+    const w = bw * 0.64;
+    const y = mt + alto - h;
+    const color = f.pct === 0 ? '#cfd8c8' : (f.pct >= 1 ? '#4a7c22' : '#a8c97f');
+
+    if (h > 0) s += `<rect x="${x}" y="${y}" width="${w}" height="${h}" rx="3" fill="${color}"/>`;
+    else       s += `<rect x="${x}" y="${mt + alto - 3}" width="${w}" height="3" rx="1.5" fill="${color}"/>`;
+
+    if (f.kgTotal > 0){
+      s += `<text class="val" x="${x + w/2}" y="${y - 5}" text-anchor="middle">` +
+           `${Math.round(f.kgTotal).toLocaleString('es-VE')}</text>`;
+    }
+    s += `<text class="lbl" x="${x + w/2}" y="${mt + alto + 17}" text-anchor="middle">` +
+         `Año ${f.anio}</text>`;
+    if (f.kgArbol > 0){
+      s += `<text class="lbl" x="${x + w/2}" y="${mt + alto + 31}" text-anchor="middle" ` +
+           `style="font-weight:500">${f.kgArbol.toFixed(0)} kg/árbol</text>`;
+    }
+  });
+
+  s += `<line class="gr" x1="${ml}" y1="${mt + alto}" x2="${ml + ancho}" y2="${mt + alto}" ` +
+       `stroke="#9aa894"/>`;
+  svg.innerHTML = s;
+}
+
+function tablaProyeccion(filas, precio, gasto){
+  let h = '<thead><tr><th>Año</th><th class="num">% del máximo</th>' +
+          '<th class="num">kg por árbol</th><th class="num">kg totales</th>';
+  if (precio > 0) h += '<th class="num">Ingreso bruto</th><th class="num">Acumulado</th>';
+  h += '<th>Qué pasa</th></tr></thead><tbody>';
+
+  const QUE = {
+    1:'Siembra y prendimiento. Riego crítico.',
+    2:'Crecimiento y poda de formación. Aún sin fruta.',
+    3:'Primera fruta. Cosecha pequeña.',
+    4:'Sigue subiendo despacio.',
+    5:'Mitad del potencial del árbol.',
+    6:'Casi en pleno. Valor interpolado.',
+    7:'Producción plena a partir de aquí.',
+  };
+
+  filas.forEach(f => {
+    h += '<tr' + (f.kgTotal === 0 ? ' class="falta"' : '') + '>';
+    h += '<td><b>Año ' + f.anio + '</b></td>';
+    h += '<td class="num">' + Math.round(f.pct * 100) + ' %' +
+         (f.anio === ANIO_INTERPOLADO ? ' <span class="tag falta">interp.</span>' : '') + '</td>';
+    h += '<td class="num">' + (f.kgArbol ? f.kgArbol.toFixed(1) + ' kg' : '—') + '</td>';
+    h += '<td class="num"><b>' + (f.kgTotal
+          ? Math.round(f.kgTotal).toLocaleString('es-VE') + ' kg' : '—') + '</b></td>';
+    if (precio > 0){
+      h += '<td class="num">' + (f.ingreso ? usd(f.ingreso) : '—') + '</td>';
+      h += '<td class="num" style="color:' + (f.acum >= 0 ? 'var(--ok)' : 'var(--danger)') + '">' +
+           usd(f.acum) + '</td>';
+    }
+    h += '<td>' + esc(QUE[f.anio] || 'Producción plena.') + '</td>';
+    h += '</tr>';
+  });
+  document.getElementById('tablaProy').innerHTML = h + '</tbody>';
+}
+
+/** Toma el precio de venta de la hoja, si el socio ya lo llenó. */
+function precioDeVenta(){
+  const fila = PRECIOS.find(p => /venta/i.test(p.Categoria || '') ||
+                                 /precio de venta/i.test(p.Item || ''));
+  const v = fila ? num(fila.Precio_USD) : null;
+  const inp  = document.getElementById('pPrecio');
+  const hint = document.getElementById('hintPrecio');
+  if (!inp) return;
+  if (v != null && v > 0){
+    if (!inp.dataset.tocado) inp.value = v;
+    hint.innerHTML = '✅ Tomado de la hoja: <b>' + usd(v) + '</b> por kg.';
+  } else {
+    hint.innerHTML = '⏳ Todavía no está en la hoja. Escríbelo aquí para simular, ' +
+                     'o pídeselo al socio.';
+  }
+}
+
 /* ---------- Carga de datos ---------- */
 function aplicar(csv, origen, cuando){
   PRECIOS = aObjetos(parseCSV(csv));
   renderTablas();
   calcular();
+  precioDeVenta();   // rellena el precio de venta si el socio ya lo puso
+  proyectar();
 
   const est = document.getElementById('estado');
   const txt = document.getElementById('estadoTxt');
@@ -1009,6 +1338,20 @@ async function cargar(){
   });
   document.querySelectorAll('.js-sinsheet').forEach(e => { e.hidden = hay; });
 })();
+
+/* Controles de la proyección. Se marca "tocado" lo que edita el usuario, para
+   no pisárselo cuando lleguen datos de la hoja o cambie el presupuesto. */
+['pPlantas','pEscenario','pKgMaduro','pPrecio','pMerma','pGasto'].forEach(id => {
+  const el = document.getElementById(id);
+  const alCambiar = () => {
+    el.dataset.tocado = '1';
+    document.getElementById('wrapCustom').hidden =
+      document.getElementById('pEscenario').value !== 'custom';
+    proyectar();
+  };
+  el.addEventListener('input', alCambiar);
+  el.addEventListener('change', alCambiar);
+});
 
 ['nPlantas','marco','metodo','litros','autonomia','bomba'].forEach(id => {
   document.getElementById(id).addEventListener('input', calcular);
