@@ -181,6 +181,7 @@
   <a href="#siembra">Cómo sembrar</a>
   <a href="#niveles">Niveles de agua y suelo</a>
   <a href="#medir">Medir y corregir</a>
+  <a href="#nutricion">Nutrición por año</a>
   <a href="#riego">Riego</a>
   <a href="#bombeo">Bombeo y gravedad</a>
   <a href="#sanidad">Sanidad</a>
@@ -1312,6 +1313,109 @@
   </div>
 </section>
 
+<!-- ============ NUTRICIÓN POR AÑO ============ -->
+<section id="nutricion">
+  <h2>¿Los niveles son iguales todos los años?</h2>
+  <p class="lead">No: hay <b>dos cosas distintas</b> que se comportan al revés. Unas
+     son <b>límites</b> y no se mueven nunca; otras son <b>dosis</b> y cambian mucho
+     con la edad del árbol.</p>
+
+  <div class="grid c2">
+    <div class="card">
+      <h3 style="margin-top:0">🔒 Lo que NO cambia nunca — los límites</h3>
+      <p>El pH, la salinidad y los cloruros son <b>condiciones que hay que
+        respetar siempre</b>, del año 1 al año 20. No son una dosis que se sube o
+        se baja: son la frontera de lo que el árbol aguanta.</p>
+      <ul class="clean">
+        <li><b>pH del agua</b> 6,5 – 7,5 · <b>del suelo</b> 6,0 – 7,0</li>
+        <li><b>CE del agua</b> &lt; 1,0 dS/m · <b>del suelo</b> &lt; 1,5 dS/m</li>
+        <li><b>Cloruros</b> &lt; 4 meq/L</li>
+      </ul>
+      <div class="callout danger" style="margin:10px 0 0">
+        <p style="margin:0"><b>Con un matiz importante:</b> el árbol <b>joven
+          aguanta menos la sal</b> que el adulto. Los dos primeros años hay que ser
+          <b>más estricto</b>, no menos. Es justo cuando más se pierden plantas.</p>
+      </div>
+    </div>
+    <div class="card">
+      <h3 style="margin-top:0">📈 Lo que SÍ cambia — las dosis</h3>
+      <p>El abono no. La cantidad crece con el árbol, y <b>la proporción entre
+        nutrientes se da la vuelta</b>:</p>
+      <ul class="clean">
+        <li><b>Primeros años:</b> el árbol solo fabrica madera y hojas. Manda el
+          <b>nitrógeno</b>, y las cantidades son pequeñas.</li>
+        <li><b>En producción:</b> la fruta se lleva mucho <b>potasio</b> — más que
+          nitrógeno. El potasio pasa a ser el nutriente número uno.</li>
+        <li>El <b>calcio</b> es el que más se mueve en total, sobre todo por la
+          madera y la hoja.</li>
+      </ul>
+      <p class="hint">Por eso no sirve comprar un solo saco de abono "para
+        cítricos" y usarlo diez años igual.</p>
+    </div>
+  </div>
+
+  <div class="card">
+    <h3 style="margin-top:0">Cuánto necesitaría cada árbol, año por año</h3>
+    <p>Calculado con la <b>extracción real medida en limón persa</b> — lo que se
+      lleva la fruta más lo que se lleva la madera y la hoja — sobre la curva de
+      cosecha de la <a href="#proyeccion">proyección</a>. Cambia el escenario allí
+      y este gráfico se recalcula.</p>
+
+    <div class="chartwrap"><svg id="graficoNutri" class="chart" viewBox="0 0 760 330"
+         preserveAspectRatio="xMidYMid meet" role="img"
+         aria-label="Demanda de nutrientes por año"></svg></div>
+    <div class="leyenda">
+      <span><i style="background:#4a7c22"></i>Nitrógeno (N)</span>
+      <span><i style="background:#c9a227"></i>Fósforo (P)</span>
+      <span><i style="background:#2b6ea8"></i>Potasio (K)</span>
+      <span><i style="background:#a06fb0"></i>Calcio (Ca)</span>
+    </div>
+
+    <h3>Detalle por año</h3>
+    <div class="tablewrap"><table id="tablaNutri"></table></div>
+    <div class="callout" id="notaNutri" style="margin-bottom:0"></div>
+  </div>
+
+  <div class="card">
+    <h3 style="margin-top:0">Dentro de cada año tampoco es parejo</h3>
+    <p>La misma cantidad anual no se echa de golpe: se reparte según lo que el
+      árbol esté haciendo en ese momento. Con fertirriego esto es fácil, porque
+      se cambia la mezcla cuando toca.</p>
+    <div class="tablewrap"><table>
+      <thead><tr><th>Momento</th><th>Qué hace el árbol</th><th>Qué pide más</th></tr></thead>
+      <tbody>
+        <tr><td><b>Antes de florecer</b></td>
+          <td>Prepara la floración</td>
+          <td><b>Nitrógeno</b>, más <b>zinc y boro</b> — su falta hace que cuaje mal</td></tr>
+        <tr><td><b>Floración y cuaje</b></td>
+          <td>Fija los frutos que va a llevar</td>
+          <td><b>Boro y calcio.</b> Ojo: exceso de nitrógeno aquí tira flor</td></tr>
+        <tr><td><b>Engorde del fruto</b></td>
+          <td>Llena la fruta</td>
+          <td><b>Potasio</b>, con diferencia. Es lo que da tamaño y calidad</td></tr>
+        <tr><td><b>Después de cosechar</b></td>
+          <td>Se repone para el año siguiente</td>
+          <td><b>Nitrógeno</b> para recuperar hoja y raíz</td></tr>
+      </tbody>
+    </table></div>
+    <p class="hint" style="margin-bottom:0">En clima costero caliente el árbol
+      puede tener varias floraciones al año, así que estos momentos se solapan.
+      Un agrónomo local sabrá el calendario real de la zona.</p>
+  </div>
+
+  <div class="callout danger">
+    <p><b>Aviso honesto sobre estas cifras.</b> Las dosis publicadas para limón
+      persa <b>varían muchísimo</b>: hay recomendaciones de 335 g de nitrógeno por
+      árbol al año y otras de 1500 g, según la zona, el suelo y el rendimiento
+      buscado. Este gráfico usa el enfoque más conservador — lo que el árbol
+      <b>se lleva</b> de verdad — y por eso da por el lado bajo.</p>
+    <p style="margin-bottom:0">Úsalo para entender <b>la forma de la curva y las
+      proporciones</b>, no como receta. La dosis real se ajusta con
+      <b>análisis de hoja y de suelo</b>, que es como se hace en huertos serios:
+      se mide la hoja, se ve qué falta y se corrige.</p>
+  </div>
+</section>
+
 <!-- ============ SANIDAD ============ -->
 <section id="sanidad">
   <h2>Sanidad</h2>
@@ -1882,6 +1986,7 @@ function proyectar(){
 
   dibujar(filas);
   tablaProyeccion(filas, precio, gasto);
+  calcularNutricion();   // la demanda de nutrientes sale de esta misma curva
 
   // --- Nota ---
   const totalDecada = filas.reduce((s, f) => s + f.kgTotal, 0);
@@ -2352,6 +2457,118 @@ function dibujarPlano(){
     '⚠ Las hileras deben ir <b>siguiendo la curva de nivel</b> (todas a la misma ' +
     'altura). Si una línea baja en pendiente, los goteros de abajo botan más agua ' +
     'que los de arriba.';
+}
+
+/* ================= NUTRICIÓN AÑO POR AÑO =================
+   Modelo: lo que el árbol NECESITA = lo que se lleva la fruta + lo que se
+   lleva la madera y la hoja.
+
+   · Extracción por tonelada de fruta (medida en limón persa), en g por kg:
+       N 1,80 · P 0,25 · K 2,24 · Ca 1,07
+   · Material vegetativo de un árbol adulto (40 kg de materia seca al año):
+       N 0,15 % · P 0,15 % · K 0,66 % · Ca 1,64 %   → 60 · 60 · 264 · 656 g
+
+   Comprobación: un árbol de 11 años con ~100 kg de fruta da
+   N 240, P 85, K 488, Ca 763 g. La fuente publica 255 / 87 / 507 / 763.
+   El modelo reproduce el dato real, así que la forma de la curva es fiable.
+
+   La fracción de tamaño del árbol por año (10 %…100 %) es interpolación
+   nuestra: va marcada como tal en la nota del sitio. */
+const EXTRAE = {N:1.80, P:0.25, K:2.24, Ca:1.07};          // g por kg de fruta
+const VEGETA = {N:60,   P:60,   K:264,  Ca:656};           // g en árbol adulto
+const TAMANO = [0.10, 0.25, 0.40, 0.55, 0.70, 0.85, 1, 1, 1, 1];
+const NUTRI_COL = {N:'#4a7c22', P:'#c9a227', K:'#2b6ea8', Ca:'#a06fb0'};
+
+function calcularNutricion(){
+  const svg = document.getElementById('graficoNutri');
+  if (!svg) return;
+  const kgMax = kgMaduro();
+
+  const filas = CURVA.map((pct, i) => {
+    const kg = kgMax * pct;
+    const f = {anio:i+1, kg};
+    Object.keys(EXTRAE).forEach(n => {
+      f[n] = kg * EXTRAE[n] + VEGETA[n] * TAMANO[i];
+    });
+    return f;
+  });
+
+  // --- Gráfico de barras agrupadas ---
+  const W = 760, H = 330, ml = 56, mr = 12, mt = 16, mb = 46;
+  const ancho = W - ml - mr, alto = H - mt - mb;
+  const claves = ['N','P','K','Ca'];
+  const max = Math.max(...filas.flatMap(f => claves.map(k => f[k])), 1);
+  const paso = Math.pow(10, Math.floor(Math.log10(max))) / 2;
+  const tope = Math.ceil(max / paso) * paso || 1;
+
+  const bwGrupo = ancho / filas.length;
+  const bw = (bwGrupo * 0.72) / claves.length;
+  let s = '';
+
+  for (let i = 0; i <= 4; i++){
+    const y = mt + alto - (alto * i / 4);
+    s += `<line class="gr" x1="${ml}" y1="${y}" x2="${ml+ancho}" y2="${y}"/>`;
+    s += `<text class="ejeY" x="${ml-8}" y="${y+3.5}" text-anchor="end">` +
+         `${Math.round(tope*i/4)}</text>`;
+  }
+  s += `<text class="ejeY" x="${ml-8}" y="${mt-4}" text-anchor="end">gramos</text>`;
+
+  filas.forEach((f, i) => {
+    const x0 = ml + i*bwGrupo + bwGrupo*0.14;
+    claves.forEach((k, j) => {
+      const h = (f[k] / tope) * alto;
+      const x = x0 + j*bw;
+      s += `<rect x="${x}" y="${mt+alto-h}" width="${bw*0.86}" height="${Math.max(0,h)}" ` +
+           `rx="2" fill="${NUTRI_COL[k]}"/>`;
+    });
+    s += `<text class="lbl" x="${ml + i*bwGrupo + bwGrupo/2}" y="${mt+alto+17}" ` +
+         `text-anchor="middle">Año ${f.anio}</text>`;
+    if (f.kg > 0){
+      s += `<text class="lbl" x="${ml + i*bwGrupo + bwGrupo/2}" y="${mt+alto+31}" ` +
+           `text-anchor="middle" style="font-weight:500">${f.kg.toFixed(0)} kg</text>`;
+    }
+  });
+  s += `<line class="gr" x1="${ml}" y1="${mt+alto}" x2="${ml+ancho}" y2="${mt+alto}" stroke="#9aa894"/>`;
+  svg.innerHTML = s;
+
+  // --- Tabla ---
+  let t = '<thead><tr><th>Año</th><th class="num">Cosecha</th>' +
+          '<th class="num">N</th><th class="num">P</th><th class="num">K</th>' +
+          '<th class="num">Ca</th><th>Qué manda</th></tr></thead><tbody>';
+  filas.forEach(f => {
+    const mandaK = f.K > f.N;
+    t += '<tr' + (f.kg === 0 ? ' class="falta"' : '') + '>';
+    t += '<td><b>Año ' + f.anio + '</b></td>';
+    t += '<td class="num">' + (f.kg ? f.kg.toFixed(0) + ' kg' : '—') + '</td>';
+    claves.forEach(k => {
+      t += '<td class="num">' + Math.round(f[k]) + ' g</td>';
+    });
+    t += '<td>' + (mandaK
+      ? '<span class="tag" style="background:#dbe9f5;color:#1f4f73">Potasio</span> ' +
+        'la fruta manda'
+      : '<span class="tag">Nitrógeno</span> el árbol crece') + '</td>';
+    t += '</tr>';
+  });
+  document.getElementById('tablaNutri').innerHTML = t + '</tbody>';
+
+  // --- Nota ---
+  const cruce = filas.find(f => f.K > f.N);
+  const y1 = filas[0], yF = filas[filas.length-1];
+  document.getElementById('notaNutri').innerHTML =
+    '<p><b>El cambio de mando ocurre en el año ' + (cruce ? cruce.anio : '—') + '.</b> ' +
+    'Hasta ahí el árbol pide sobre todo <b>nitrógeno</b>, porque solo está fabricando ' +
+    'madera y hoja. A partir de ahí lo que más pide es <b>potasio</b>, porque cada ' +
+    'kilo de fruta se lleva más potasio que nitrógeno.</p>' +
+    '<p>En números: del año 1 al año 10 el nitrógeno pasa de <b>' +
+    Math.round(y1.N) + ' g a ' + Math.round(yF.N) + ' g</b> por árbol (×' +
+    (yF.N/Math.max(1,y1.N)).toFixed(0) + '), pero el potasio pasa de <b>' +
+    Math.round(y1.K) + ' g a ' + Math.round(yF.K) + ' g</b> (×' +
+    (yF.K/Math.max(1,y1.K)).toFixed(0) + '). No es solo que haga falta más abono: ' +
+    '<b>hace falta otro abono</b>.</p>' +
+    '<p style="margin-bottom:0">El <b>calcio</b> sale alto en toda la tabla porque ' +
+    'se va sobre todo en madera y hoja, no en la fruta. Buena parte suele venir ya ' +
+    'en el agua y en el suelo — otra razón para mirar el análisis antes de comprar ' +
+    'nada.</p>';
 }
 
 /* --- El bulbo húmedo: con drenaje y sin drenaje --- */
