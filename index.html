@@ -1356,11 +1356,13 @@
   </div>
 
   <div class="card">
-    <h3 style="margin-top:0">Cuánto necesitaría cada árbol, año por año</h3>
-    <p>Calculado con la <b>extracción real medida en limón persa</b> — lo que se
-      lleva la fruta más lo que se lleva la madera y la hoja — sobre la curva de
-      cosecha de la <a href="#proyeccion">proyección</a>. Cambia el escenario allí
-      y este gráfico se recalcula.</p>
+    <h3 style="margin-top:0">Lo que se lleva la cosecha, año por año</h3>
+    <p>Calculado con la <b>extracción real medida en limón persa</b> aplicada a la
+      curva de cosecha de la <a href="#proyeccion">proyección</a>. Cambia el
+      escenario allí y este gráfico se recalcula.</p>
+    <p class="hint">Es <b>lo que sale de la parcela dentro de la fruta</b>, y por
+      tanto el mínimo que hay que devolverle al suelo cada año. No incluye lo que
+      consume la madera y la hoja — ver la nota de abajo.</p>
 
     <div class="chartwrap"><svg id="graficoNutri" class="chart" viewBox="0 0 760 330"
          preserveAspectRatio="xMidYMid meet" role="img"
@@ -2602,20 +2604,16 @@ function dibujarPlano(){
    Modelo: lo que el árbol NECESITA = lo que se lleva la fruta + lo que se
    lleva la madera y la hoja.
 
-   · Extracción por tonelada de fruta (medida en limón persa), en g por kg:
+   Se grafica SOLO lo que se lleva la cosecha, que es el dato sólido:
+   extracción medida en limón persa, en g por kg de fruta:
        N 1,80 · P 0,25 · K 2,24 · Ca 1,07
-   · Material vegetativo de un árbol adulto (40 kg de materia seca al año):
-       N 0,15 % · P 0,15 % · K 0,66 % · Ca 1,64 %   → 60 · 60 · 264 · 656 g
 
-   Comprobación: un árbol de 11 años con ~100 kg de fruta da
-   N 240, P 85, K 488, Ca 763 g. La fuente publica 255 / 87 / 507 / 763.
-   El modelo reproduce el dato real, así que la forma de la curva es fiable.
-
-   La fracción de tamaño del árbol por año (10 %…100 %) es interpolación
-   nuestra: va marcada como tal en la nota del sitio. */
+   Deliberadamente NO se suma aquí lo que consume la madera y la hoja. La
+   fuente da 0,15 % de N en el material vegetativo, una cifra que no encaja
+   con la hoja de cítrico (que ronda el 2 % de N), así que apoyar una curva
+   en ella daría una falsa precisión. Esa parte se explica en texto, no en
+   números. */
 const EXTRAE = {N:1.80, P:0.25, K:2.24, Ca:1.07};          // g por kg de fruta
-const VEGETA = {N:60,   P:60,   K:264,  Ca:656};           // g en árbol adulto
-const TAMANO = [0.10, 0.25, 0.40, 0.55, 0.70, 0.85, 1, 1, 1, 1];
 const NUTRI_COL = {N:'#4a7c22', P:'#c9a227', K:'#2b6ea8', Ca:'#a06fb0'};
 
 function calcularNutricion(){
@@ -2625,10 +2623,8 @@ function calcularNutricion(){
 
   const filas = CURVA.map((pct, i) => {
     const kg = kgMax * pct;
-    const f = {anio:i+1, kg};
-    Object.keys(EXTRAE).forEach(n => {
-      f[n] = kg * EXTRAE[n] + VEGETA[n] * TAMANO[i];
-    });
+    const f = {anio:i+1, kg, pct};
+    Object.keys(EXTRAE).forEach(n => { f[n] = kg * EXTRAE[n]; });
     return f;
   });
 
@@ -2682,32 +2678,35 @@ function calcularNutricion(){
     claves.forEach(k => {
       t += '<td class="num">' + Math.round(f[k]) + ' g</td>';
     });
-    t += '<td>' + (mandaK
-      ? '<span class="tag" style="background:#dbe9f5;color:#1f4f73">Potasio</span> ' +
-        'la fruta manda'
-      : '<span class="tag">Nitrógeno</span> el árbol crece') + '</td>';
+    t += '<td>' + (f.kg === 0
+      ? '<span class="tag">Sin cosecha</span> el abono va todo a formar el árbol'
+      : '<span class="tag" style="background:#dbe9f5;color:#1f4f73">Potasio</span> ' +
+        'es lo que más se lleva la fruta') + '</td>';
     t += '</tr>';
   });
   document.getElementById('tablaNutri').innerHTML = t + '</tbody>';
 
   // --- Nota ---
-  const cruce = filas.find(f => f.K > f.N);
-  const y1 = filas[0], yF = filas[filas.length-1];
+  const primera = filas.find(f => f.kg > 0);
+  const plena   = filas.find(f => f.pct >= 1) || filas[filas.length-1];
+  const yF = filas[filas.length-1];
   document.getElementById('notaNutri').innerHTML =
-    '<p><b>El cambio de mando ocurre en el año ' + (cruce ? cruce.anio : '—') + '.</b> ' +
-    'Hasta ahí el árbol pide sobre todo <b>nitrógeno</b>, porque solo está fabricando ' +
-    'madera y hoja. A partir de ahí lo que más pide es <b>potasio</b>, porque cada ' +
-    'kilo de fruta se lleva más potasio que nitrógeno.</p>' +
-    '<p>En números: del año 1 al año 10 el nitrógeno pasa de <b>' +
-    Math.round(y1.N) + ' g a ' + Math.round(yF.N) + ' g</b> por árbol (×' +
-    (yF.N/Math.max(1,y1.N)).toFixed(0) + '), pero el potasio pasa de <b>' +
-    Math.round(y1.K) + ' g a ' + Math.round(yF.K) + ' g</b> (×' +
-    (yF.K/Math.max(1,y1.K)).toFixed(0) + '). No es solo que haga falta más abono: ' +
-    '<b>hace falta otro abono</b>.</p>' +
-    '<p style="margin-bottom:0">El <b>calcio</b> sale alto en toda la tabla porque ' +
-    'se va sobre todo en madera y hoja, no en la fruta. Buena parte suele venir ya ' +
-    'en el agua y en el suelo — otra razón para mirar el análisis antes de comprar ' +
-    'nada.</p>';
+    '<p><b>Este gráfico es solo lo que se lleva la fruta al salir de la parcela.</b> ' +
+    'Es el mínimo que hay que devolver al suelo cada año para no descapitalizarlo. ' +
+    'Los años 1 y 2 salen en cero porque no hay cosecha — pero <b>eso no significa ' +
+    'que no haya que abonar</b>: significa que todo el abono de esos años va a ' +
+    'construir el árbol, no a la fruta.</p>' +
+    '<p><b>El potasio es lo que más se lleva la fruta</b>, por encima del nitrógeno: ' +
+    'cada tonelada de limón exporta 2,24 kg de potasio frente a 1,80 de nitrógeno. ' +
+    'Por eso, cuando el árbol entra en producción (año ' +
+    (primera ? primera.anio : '—') + '), el potasio pasa a ser el nutriente que hay ' +
+    'que vigilar — y en plena producción (año ' + plena.anio + ') la fruta se lleva ' +
+    '<b>' + Math.round(plena.K) + ' g de potasio por árbol al año</b>.</p>' +
+    '<p style="margin-bottom:0">En los <b>primeros años manda el nitrógeno</b>, ' +
+    'porque el árbol solo está fabricando hoja y madera. No ponemos esa cifra en el ' +
+    'gráfico a propósito: la fuente que encontramos da un valor para el material ' +
+    'vegetativo que no nos cuadra, y preferimos no dibujar un número en el que no ' +
+    'confiamos. Esa parte se ajusta con <b>análisis de hoja</b>.</p>';
 }
 
 /* --- El bulbo húmedo: con drenaje y sin drenaje --- */
