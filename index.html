@@ -1,0 +1,908 @@
+<!doctype html>
+<html lang="es">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="robots" content="noindex, nofollow">
+<meta name="description" content="Proyecto de cultivo de limón persa en Naiguatá, La Guaira, Venezuela. Plan, riego, precios y presupuesto para los dos socios.">
+<title>Limón Persa · Naiguatá — Proyecto de los dos socios</title>
+<style>
+  :root{
+    --bg:#f4f7f0; --surface:#fff; --ink:#1a2418; --muted:#5f6f5a;
+    --brand:#4a7c22; --brand-dark:#355917; --brand-soft:#e6f0d9;
+    --accent:#c9a227; --danger:#a83a2f; --danger-soft:#fbeae8;
+    --ok:#2e7d4f; --line:#dde5d6;
+    --shadow:0 8px 26px rgba(30,50,20,.09); --radius:14px;
+  }
+  *{box-sizing:border-box}
+  html{scroll-behavior:smooth}
+  body{margin:0;background:var(--bg);color:var(--ink);
+    font:16px/1.6 system-ui,-apple-system,"Segoe UI",Roboto,sans-serif}
+  a{color:var(--brand)}
+  .wrap{width:min(1080px,calc(100% - 28px));margin:auto}
+
+  header{background:linear-gradient(135deg,#2f5a14 0%,#4a7c22 60%,#7fae3c 100%);
+    color:#fff;padding:34px 0 30px}
+  .eyebrow{letter-spacing:.13em;text-transform:uppercase;font-size:11.5px;opacity:.85}
+  h1{margin:8px 0 10px;font-size:clamp(28px,7vw,48px);line-height:1.05}
+  header p{max-width:700px;margin:0;font-size:17px;opacity:.94}
+  .pills{display:flex;flex-wrap:wrap;gap:7px;margin-top:18px}
+  .pill{display:inline-flex;padding:6px 11px;border-radius:999px;
+    background:rgba(255,255,255,.16);font-size:13px}
+
+  nav{position:sticky;top:0;z-index:30;overflow-x:auto;white-space:nowrap;
+    background:rgba(255,255,255,.97);border-bottom:1px solid var(--line);
+    -webkit-backdrop-filter:blur(10px);backdrop-filter:blur(10px)}
+  nav .wrap{display:flex;gap:3px;padding:7px 0}
+  nav a{text-decoration:none;color:var(--ink);padding:8px 11px;border-radius:8px;
+    font-size:14px;font-weight:500}
+  nav a:hover{background:var(--brand-soft);color:var(--brand-dark)}
+
+  main{padding:18px 0 60px}
+  section{scroll-margin-top:64px;margin:26px 0}
+  h2{font-size:clamp(22px,4.5vw,31px);margin:0 0 6px;color:var(--brand-dark)}
+  h3{margin:20px 0 8px;font-size:17px}
+  .lead{color:var(--muted);max-width:820px;margin:0 0 16px}
+
+  .card{background:var(--surface);border:1px solid var(--line);
+    border-radius:var(--radius);padding:18px;box-shadow:var(--shadow);margin:14px 0}
+  .grid{display:grid;gap:14px}
+  @media(min-width:760px){.grid.c2{grid-template-columns:1fr 1fr}
+    .grid.c3{grid-template-columns:repeat(3,1fr)}}
+
+  .callout{border-left:4px solid var(--accent);background:#fdf8e8;
+    padding:13px 15px;border-radius:0 10px 10px 0;margin:14px 0}
+  .callout.danger{border-left-color:var(--danger);background:var(--danger-soft)}
+  .callout.ok{border-left-color:var(--ok);background:#e8f5ed}
+  .callout p:last-child{margin-bottom:0}
+  .callout p:first-child{margin-top:0}
+
+  .tablewrap{overflow-x:auto;-webkit-overflow-scrolling:touch;margin:10px 0}
+  table{border-collapse:collapse;width:100%;min-width:520px;font-size:14.5px}
+  th,td{text-align:left;padding:9px 11px;border-bottom:1px solid var(--line);vertical-align:top}
+  th{background:var(--brand-soft);color:var(--brand-dark);font-weight:600;
+    position:sticky;top:0}
+  td.num,th.num{text-align:right;white-space:nowrap;font-variant-numeric:tabular-nums}
+  tr.falta td{background:#fff8f7}
+  .tag{display:inline-block;font-size:11.5px;font-weight:600;padding:2px 7px;
+    border-radius:999px;background:var(--brand-soft);color:var(--brand-dark)}
+  .tag.falta{background:var(--danger-soft);color:var(--danger)}
+  .tag.mejor{background:#e8f5ed;color:var(--ok)}
+
+  .status{display:flex;flex-wrap:wrap;align-items:center;gap:9px;
+    padding:11px 14px;border-radius:11px;font-size:14px;margin:12px 0}
+  .status.live{background:#e8f5ed;border:1px solid #b9dcc7;color:#1d5936}
+  .status.fallback{background:#fdf8e8;border:1px solid #ecdba6;color:#6b5510}
+  .status.error{background:var(--danger-soft);border:1px solid #e8c0ba;color:#7d2a22}
+  .dot{width:9px;height:9px;border-radius:50%;flex:none}
+  .dot.live{background:var(--ok)} .dot.fallback{background:var(--accent)}
+  .dot.error{background:var(--danger)}
+  button.refresh{margin-left:auto;font:600 13px system-ui,sans-serif;padding:6px 12px;
+    border-radius:8px;border:1px solid currentColor;background:transparent;
+    color:inherit;cursor:pointer}
+  button.refresh:hover{background:rgba(255,255,255,.6)}
+
+  .calc{display:grid;gap:13px}
+  @media(min-width:700px){.calc{grid-template-columns:1fr 1fr}}
+  label{display:block;font-size:13.5px;font-weight:600;margin-bottom:4px;color:var(--muted)}
+  input[type=number],select{width:100%;padding:9px 11px;border:1px solid var(--line);
+    border-radius:9px;font:15px system-ui,sans-serif;background:#fff;color:var(--ink)}
+  input:focus,select:focus{outline:2px solid var(--brand);outline-offset:-1px}
+  .hint{font-size:12.5px;color:var(--muted);margin-top:3px}
+
+  .totals{margin-top:16px}
+  .totline{display:flex;justify-content:space-between;gap:12px;padding:8px 0;
+    border-bottom:1px dashed var(--line);font-size:15px}
+  .totline.big{border-bottom:none;border-top:2px solid var(--brand);
+    margin-top:8px;padding-top:12px;font-size:19px;font-weight:700;color:var(--brand-dark)}
+  .totline .v{font-variant-numeric:tabular-nums;white-space:nowrap}
+
+  .fotos{display:grid;gap:12px;grid-template-columns:repeat(auto-fill,minmax(160px,1fr))}
+  .foto{background:#fff;border:1px solid var(--line);border-radius:11px;overflow:hidden}
+  .foto img{width:100%;height:140px;object-fit:cover;display:block;background:#eee}
+  .foto .cap{padding:8px 10px;font-size:13px}
+  .foto .cap b{display:block;color:var(--brand-dark)}
+
+  ul.clean{padding-left:19px;margin:8px 0}
+  ul.clean li{margin:5px 0}
+  .q{border:1px solid var(--line);border-left:4px solid var(--brand);
+    background:#fff;border-radius:0 11px 11px 0;padding:13px 15px;margin:11px 0}
+  .q b{color:var(--brand-dark)}
+  .q .why{font-size:13.5px;color:var(--muted);margin-top:5px}
+
+  footer{border-top:1px solid var(--line);padding:22px 0 40px;
+    color:var(--muted);font-size:13.5px}
+  code{background:#eef2ea;padding:1.5px 5px;border-radius:5px;font-size:.92em}
+  .step{display:flex;gap:11px;margin:11px 0}
+  .step .n{flex:none;width:26px;height:26px;border-radius:50%;background:var(--brand);
+    color:#fff;font:700 14px system-ui,sans-serif;display:grid;place-items:center}
+</style>
+</head>
+<body>
+
+<header>
+  <div class="wrap">
+    <div class="eyebrow">Proyecto de dos socios · Bélgica ↔ Venezuela</div>
+    <h1>Limón Persa<br>Naiguatá, La Guaira</h1>
+    <p>Plan de siembra, riego y presupuesto para el huerto de limón persa
+       (lima Tahití) en la parcela de Naiguatá. Esta página es la versión
+       compartida: los precios salen de la hoja que actualiza el socio en Venezuela.</p>
+    <div class="pills">
+      <span class="pill">📍 10°36'52,4"N · 66°44'03,8"W</span>
+      <span class="pill">🍋 Citrus × latifolia</span>
+      <span class="pill">💧 Riego por definir</span>
+      <span class="pill" id="pillPrecios">💲 Precios: cargando…</span>
+    </div>
+  </div>
+</header>
+
+<nav><div class="wrap">
+  <a href="#necesito">Lo que hace falta</a>
+  <a href="#precios">Precios</a>
+  <a href="#presupuesto">Presupuesto</a>
+  <a href="#parcela">La parcela</a>
+  <a href="#plantacion">Plantación</a>
+  <a href="#riego">Riego</a>
+  <a href="#sanidad">Sanidad</a>
+  <a href="#negocio">Negocio</a>
+  <a href="#decisiones">Decisiones</a>
+  <a href="#actualizar">Cómo actualizar</a>
+</div></nav>
+
+<main class="wrap">
+
+<!-- ============ LO QUE HACE FALTA ============ -->
+<section id="necesito">
+  <h2>Lo que hace falta para poder decidir</h2>
+  <p class="lead">Estas preguntas están abiertas y bloquean todo lo demás: sin ellas
+     no se puede cerrar ni el presupuesto ni el diseño del riego. Las respuestas
+     salen del terreno, en Venezuela.</p>
+
+  <div class="q">
+    <b>1 · ¿Cuántas plantas y cuánta superficie tenemos?</b>
+    <div class="why">Define absolutamente todo lo demás: agua por día, tamaño del
+      tanque, caudal de la bomba, metros de línea de riego y el presupuesto total.
+      Es la primera pregunta que hay que responder.</div>
+  </div>
+
+  <div class="q">
+    <b>2 · Las plantas de $1 ¿son injertadas o de semilla?</b>
+    <div class="why">El limón persa comercial casi siempre es <b>injertado sobre un
+      patrón</b>: eso define el vigor, la tolerancia a la salinidad y a la sequía, la
+      resistencia a enfermedades de raíz, y adelanta la primera cosecha. De semilla
+      sale más barato pero tarda más y es menos predecible. A $1 hay que confirmar
+      qué se está comprando.</div>
+  </div>
+
+  <div class="q">
+    <b>3 · El agua: ¿de dónde sale y qué calidad tiene?</b>
+    <div class="why">Pozo, red, camión o quebrada. El limón persa es
+      <b>sensible a la salinidad</b> y estamos en la costa: agua salobre quema hojas
+      y frena el árbol. Hay que medir pH, conductividad (salinidad) y cloruros
+      <b>antes</b> de comprometer la plantación. Esto también decide el patrón.</div>
+  </div>
+
+  <div class="q">
+    <b>4 · ¿Riego por goteo o por aspersión?</b>
+    <div class="why">Las fotos que tenemos son de aspersores/gallitos. Para cítricos
+      en clima caliente el <b>goteo</b> suele ser lo estándar: gasta menos agua, no
+      moja el follaje (menos hongos) y lleva el agua directo a la raíz. Se decide
+      con el agua disponible y el presupuesto.</div>
+  </div>
+
+  <div class="q">
+    <b>5 · Presupuesto y plazo que aguantamos.</b>
+    <div class="why">El limón persa tarda alrededor de <b>2 a 3 años</b> en dar la
+      primera fruta y <b>4 a 5</b> en plena producción. Hay que sostener el gasto de
+      riego y mantenimiento un buen tiempo sin ingreso. ¿Con cuánto contamos y
+      hasta cuándo?</div>
+  </div>
+
+  <div class="callout danger">
+    <p><b>⚠ Antes de plantar en firme: verificar la quebrada.</b> La parcela es la
+      misma que se estudió para la granja de pollos, y allí quedó levantado el
+      riesgo de cauce / abanico de quebrada. Un huerto en el paso de una quebrada
+      se pierde entero igual que un galpón. Esta verificación se hace en el sitio,
+      no en el papel.</p>
+  </div>
+</section>
+
+<!-- ============ PRECIOS ============ -->
+<section id="precios">
+  <h2>Precios</h2>
+  <p class="lead">Esta tabla se lee directamente de la hoja de cálculo que mantiene
+     el socio en Venezuela. Si él cambia un precio en la hoja, aquí aparece
+     actualizado al recargar la página.</p>
+
+  <div id="estado" class="status fallback">
+    <span class="dot fallback"></span>
+    <span id="estadoTxt">Cargando precios…</span>
+    <button class="refresh" id="btnRefresh" type="button">Actualizar</button>
+  </div>
+
+  <div class="callout">
+    <p><b>Estos son precios observados, no cotizaciones en firme.</b> No incluyen
+      flete a la parcela ni instalación, y en Venezuela cambian rápido. Antes de
+      comprar hay que confirmar disponibilidad, garantía y <b>precio puesto en
+      Naiguatá</b>.</p>
+  </div>
+
+  <div id="tablasPrecios"></div>
+
+  <h3>Hallazgo de compra: los tanques cónicos rinden casi el doble</h3>
+  <div id="hallazgoTanques" class="callout ok"></div>
+</section>
+
+<!-- ============ PRESUPUESTO ============ -->
+<section id="presupuesto">
+  <h2>Calculadora de presupuesto</h2>
+  <p class="lead">Mueve los números y el total se recalcula con los precios que
+     estén en la hoja en este momento. Sirve para ver el orden de magnitud y para
+     comparar escenarios, no como cotización.</p>
+
+  <div class="card">
+    <div class="calc">
+      <div>
+        <label for="nPlantas">Número de plantas</label>
+        <input type="number" id="nPlantas" value="100" min="1" max="10000" step="1">
+        <div class="hint">A definir con la superficie real de la parcela.</div>
+      </div>
+      <div>
+        <label for="marco">Marco de plantación (metros entre plantas)</label>
+        <input type="number" id="marco" value="5" min="2" max="10" step="0.5">
+        <div class="hint">Tradicional 5–6 m · intensivo 3–4 m con más manejo.</div>
+      </div>
+      <div>
+        <label for="metodo">Método de riego</label>
+        <select id="metodo">
+          <option value="goteo">Goteo (2 goteros por planta)</option>
+          <option value="aspersion">Aspersión / gallitos (1 por planta)</option>
+        </select>
+        <div class="hint">Para cítrico en calor suele ganar el goteo.</div>
+      </div>
+      <div>
+        <label for="litros">Litros por planta y por día</label>
+        <input type="number" id="litros" value="20" min="1" max="200" step="1">
+        <div class="hint">⚠ Estimación. Depende de la edad del árbol, el clima y el
+          suelo — hay que verificarla con un agrónomo local.</div>
+      </div>
+      <div>
+        <label for="autonomia">Días de autonomía de agua (reserva en tanque)</label>
+        <input type="number" id="autonomia" value="2" min="1" max="30" step="1">
+        <div class="hint">Cuántos días debe aguantar el huerto sin reponer agua.</div>
+      </div>
+      <div>
+        <label for="bomba">¿Incluir la bomba de 2 HP?</label>
+        <select id="bomba">
+          <option value="si">Sí, incluirla</option>
+          <option value="no">No (ya la tenemos / a definir)</option>
+        </select>
+        <div class="hint">Para un huerto pequeño 2 HP puede ser más de lo necesario.</div>
+      </div>
+    </div>
+
+    <div class="totals" id="totales"></div>
+
+    <div class="callout" style="margin-bottom:0">
+      <p id="notaPresupuesto"></p>
+    </div>
+  </div>
+</section>
+
+<!-- ============ LA PARCELA ============ -->
+<section id="parcela">
+  <h2>La parcela</h2>
+  <p class="lead">Es la misma parcela que se estudió para la granja de ponedoras,
+     así que toda la verificación de sitio de aquel proyecto aplica igual aquí. No
+     se vuelve a derivar: se ejecuta.</p>
+
+  <div class="grid c2">
+    <div class="card">
+      <h3>Lo que hay que verificar en el sitio</h3>
+      <ul class="clean">
+        <li><b>Riesgo de quebrada / inundación</b> — cauce y abanico de deslave.
+          Es lo primero y lo más grave.</li>
+        <li><b>Distancia real al mar y salinidad</b> — gobierna la elección del
+          patrón y si el agua sirve para regar.</li>
+        <li><b>Drenaje del terreno</b> — los cítricos odian el encharcamiento
+          (pudrición de raíz por <i>Phytophthora</i>). Si drena mal, hay que
+          plantar en camellón o lomo.</li>
+      </ul>
+    </div>
+    <div class="card">
+      <h3>Clima de la costa (ya caracterizado)</h3>
+      <ul class="clean">
+        <li>Costa caliente, húmeda (~70–85 %) y salina.</li>
+        <li>El <b>sol fuerte es bueno</b> para el cítrico — aquí el problema se
+          invierte respecto a las gallinas, que sufrían con el calor.</li>
+        <li>Lo que manda el éxito es la <b>calidad del agua</b> y el
+          <b>drenaje</b>, no la temperatura.</li>
+      </ul>
+    </div>
+  </div>
+</section>
+
+<!-- ============ PLANTACIÓN ============ -->
+<section id="plantacion">
+  <h2>Plantación</h2>
+  <div class="grid c2">
+    <div class="card">
+      <h3>Marco y densidad</h3>
+      <p>El limón persa suele ir a <b>5–6 m entre plantas</b> en huerto tradicional,
+        o <b>3–4 m</b> en plantación densa con manejo intensivo. Con el número de
+        plantas y el área real se cierra el layout definitivo.</p>
+      <p class="hint">La calculadora de arriba muestra el área que haría falta según
+        el marco que elijas.</p>
+    </div>
+    <div class="card">
+      <h3>Patrón e injerto</h3>
+      <p>Hay que consultar con un vivero o agrónomo local qué <b>patrón tolerante a
+        salinidad</b> se consigue en la zona. En costa salina el patrón es la
+        decisión técnica más importante de todo el proyecto — más que la variedad.</p>
+    </div>
+    <div class="card">
+      <h3>Hoyo de siembra y suelo</h3>
+      <p>Tamaño del hoyo, enmienda de suelo y si se planta en camellón se deciden
+        <b>según el drenaje real</b> medido en la parcela.</p>
+    </div>
+    <div class="card">
+      <h3>Poda de formación</h3>
+      <p>Los primeros años se hace poda de formación para armar la copa y facilitar
+        la cosecha después.</p>
+    </div>
+  </div>
+</section>
+
+<!-- ============ RIEGO ============ -->
+<section id="riego">
+  <h2>Riego — el equipo que ya tenemos cotizado</h2>
+  <p class="lead">Fotos de proveedor recibidas el 22/07/2026. Los precios de cada
+     equipo están en la tabla de precios de arriba y se actualizan desde la hoja.</p>
+
+  <div class="fotos">
+    <figure class="foto" style="margin:0">
+      <img src="img/Bomba_2hp.jpeg" alt="Bomba centrífuga de 2 HP" loading="lazy">
+      <figcaption class="cap"><b>Bomba centrífuga 2 HP</b>Utrera Electrónica</figcaption>
+    </figure>
+    <figure class="foto" style="margin:0">
+      <img src="img/Filtro_Agua.jpeg" alt="Filtro de agua de 1/2 pulgada" loading="lazy">
+      <figcaption class="cap"><b>Filtro de agua ½"</b>150 psi · obligatorio antes de goteros</figcaption>
+    </figure>
+    <figure class="foto" style="margin:0">
+      <img src="img/Regadero.jpeg" alt="Aspersor o gallito de riego" loading="lazy">
+      <figcaption class="cap"><b>Aspersor / gallito ½"</b>Riego por aspersión</figcaption>
+    </figure>
+    <figure class="foto" style="margin:0">
+      <img src="img/Tanque_Conico.jpeg" alt="Tanques cónicos" loading="lazy">
+      <figcaption class="cap"><b>Tanques cónicos</b>1000 · 1300 · 1650 L</figcaption>
+    </figure>
+    <figure class="foto" style="margin:0">
+      <img src="img/Tanque_Cilindro.jpeg" alt="Tanques cilíndricos" loading="lazy">
+      <figcaption class="cap"><b>Tanques cilíndricos</b>400 a 1050 L</figcaption>
+    </figure>
+  </div>
+
+  <div class="grid c2" style="margin-top:16px">
+    <div class="card">
+      <h3>Lo que falta dimensionar</h3>
+      <ul class="clean">
+        <li><b>Litros por planta y día</b> según edad del árbol y clima → define el
+          volumen de tanque, el caudal de la bomba y cuántos goteros.</li>
+        <li><b>Si la bomba de 2 HP sobra.</b> Para un huerto pequeño puede ser
+          bastante más de lo necesario — y una bomba sobredimensionada gasta
+          corriente de más toda la vida del proyecto.</li>
+        <li><b>Calidad del agua</b> (pH, salinidad, cloruros). Bloquea la decisión
+          de goteo vs aspersión y la del patrón.</li>
+      </ul>
+    </div>
+    <div class="card">
+      <h3>El filtro no es opcional</h3>
+      <p>Si vamos a goteo, el <b>filtro va antes de los goteros</b> sí o sí: se tapan
+        con sedimento y se pierde la línea. A $7,49 es la pieza más barata del
+        sistema y la que más problemas evita. Ya tenemos uno de ½" cotizado.</p>
+    </div>
+  </div>
+</section>
+
+<!-- ============ SANIDAD ============ -->
+<section id="sanidad">
+  <h2>Sanidad</h2>
+  <div class="callout danger">
+    <p><b>No fumigar a ciegas.</b> Antes de cualquier tratamiento hay que verificar
+      con un agrónomo local qué presión de plagas hay realmente en la zona.</p>
+  </div>
+  <div class="grid c2">
+    <div class="card">
+      <h3>Lo que hay que vigilar</h3>
+      <ul class="clean">
+        <li><b>Minador de la hoja</b> — típico en cítrico joven.</li>
+        <li><b>Ácaros.</b></li>
+        <li><b><i>Phytophthora</i></b> (raíz y pie) — ligada al mal drenaje y al
+          encharcamiento.</li>
+        <li><b>HLB / greening</b> — grave en cítricos. Hay que verificar la presión
+          local; condiciona si el proyecto es viable a largo plazo.</li>
+      </ul>
+    </div>
+    <div class="card">
+      <h3>Nutrición</h3>
+      <p>Cuando el riego esté montado se arma un programa de fertilización por
+        <b>fertirriego</b> (abono disuelto en el agua de goteo), que es más eficiente
+        que abonar al suelo y aprovecha la instalación que ya se pagó.</p>
+    </div>
+  </div>
+</section>
+
+<!-- ============ NEGOCIO ============ -->
+<section id="negocio">
+  <h2>Negocio</h2>
+  <div class="grid c2">
+    <div class="card">
+      <h3>El horizonte es largo</h3>
+      <p>Primera fruta alrededor de los <b>2–3 años</b>; plena producción a los
+        <b>4–5</b>. Durante todo ese tiempo hay gasto de agua, energía, abono y mano
+        de obra <b>sin ingreso</b>. Es la diferencia grande contra el proyecto de
+        pollos, que daba vuelta en semanas.</p>
+    </div>
+    <div class="card">
+      <h3>Lo que falta averiguar en el mercado</h3>
+      <ul class="clean">
+        <li><b>Precio del limón persa al productor</b> en la zona — está en la hoja
+          como dato pendiente.</li>
+        <li><b>Canal de venta</b>: mercado, intermediario o directo. Cambia el
+          precio y el esfuerzo de venta.</li>
+      </ul>
+      <p class="hint">Con esos dos datos se arma el modelo económico completo:
+        inversión inicial, gasto anual y curva de producción hasta plena cosecha.</p>
+    </div>
+  </div>
+</section>
+
+<!-- ============ DECISIONES ============ -->
+<section id="decisiones">
+  <h2>Decisiones ya tomadas</h2>
+  <div class="card">
+    <h3>D-001 · El cultivo es limón persa</h3>
+    <p>Se siembra limón persa (lima Tahití, <i>Citrus × latifolia</i>): cultivo
+      comercial común en Venezuela, tolerante al calor costero, fruto sin semilla y
+      de demanda estable. El material de la granja de ponedoras queda archivado;
+      esta parcela pasa a huerto.</p>
+  </div>
+  <div class="card">
+    <h3>D-002 · Misma parcela — la verificación de sitio se hereda</h3>
+    <p>La parcela es la misma del proyecto de pollos (10°36'52,4"N 66°44'03,8"W).
+      Por tanto la verificación de sitio de aquel proyecto — riesgo de quebrada,
+      elevación, distancia al mar y drenaje — <b>aplica igual aquí</b> y hay que
+      ejecutarla antes de plantar en firme.</p>
+  </div>
+</section>
+
+<!-- ============ CÓMO ACTUALIZAR ============ -->
+<section id="actualizar">
+  <h2>Cómo actualizar los precios</h2>
+  <p class="lead">Para el socio en Venezuela. No hace falta instalar nada ni saber
+     de programación: se edita una hoja de cálculo normal, desde el teléfono.</p>
+
+  <div class="card">
+    <div class="step"><div class="n">1</div><div>
+      Abre el <b>Google Sheet del proyecto</b> (el enlace te lo pasa tu socio; se
+      abre con la app de Google Sheets en el teléfono).</div></div>
+    <div class="step"><div class="n">2</div><div>
+      Busca la fila del producto y escribe el precio nuevo en la columna
+      <b>Precio_USD</b>. Pon la fecha de hoy en <b>Actualizado</b> para que se sepa
+      qué tan fresco es el dato.</div></div>
+    <div class="step"><div class="n">3</div><div>
+      Las filas que dicen <b>FALTA PRECIO</b> son las que nos hacen falta.
+      Si consigues el dato, escríbelo ahí.</div></div>
+    <div class="step"><div class="n">4</div><div>
+      ¿Un producto nuevo? Agrega una fila al final, llenando al menos
+      <b>Categoria</b>, <b>Item</b> y <b>Precio_USD</b>. Aparece solo en esta página.</div></div>
+    <div class="step"><div class="n">5</div><div>
+      Listo. Recarga esta página y verás los precios nuevos. Se guarda solo: no
+      hay que darle a "enviar" ni avisar a nadie.</div></div>
+
+    <div class="callout ok" style="margin-bottom:0">
+      <p><b>Sin internet no se pierde nada.</b> La app de Google Sheets guarda los
+        cambios en el teléfono y los sube cuando vuelve la señal. Y esta página
+        recuerda los últimos precios que cargó, así que sigue mostrando algo
+        aunque estés sin datos.</p>
+    </div>
+  </div>
+
+  <div class="callout">
+    <p><b>Si te equivocas, no pasa nada.</b> El Google Sheet guarda todo el
+      historial de cambios (<i>Archivo → Historial de versiones</i>), así que
+      cualquier error se puede devolver.</p>
+  </div>
+</section>
+
+</main>
+
+<footer><div class="wrap">
+  <p><b>Limón Persa · Naiguatá, La Guaira.</b> Proyecto de dos socios.
+     Documento de trabajo, en español, para uso de los socios.</p>
+  <p>Las cifras agronómicas (litros por planta, marco de plantación, años hasta
+     cosecha) son <b>estimaciones</b> atadas a la variedad y al sitio: se verifican
+     con un vivero o agrónomo local y en la parcela real, no en esta página.
+     Los precios son observados y no incluyen flete ni instalación.</p>
+  <p id="pieActualizado"></p>
+</div></footer>
+
+<script>
+/* ==========================================================================
+   CONFIGURACIÓN — pega aquí la URL CSV del Google Sheet.
+   Cómo obtenerla: en el Sheet → Archivo → Compartir → Publicar en la web
+   → pestaña "Precios" → formato "Valores separados por comas (.csv)"
+   → Publicar → copiar el enlace (termina en output=csv).
+   Si se deja vacío, la página usa la copia de respaldo de abajo.
+   ========================================================================== */
+const PRECIOS_CSV_URL = '';
+
+/* Copia de respaldo: los precios conocidos al 22/07/2026. Se usan si el Sheet
+   todavía no está conectado o si no hay internet y no hay nada en caché. */
+const RESPALDO = `Categoria,Item,Especificacion,Precio_USD,Capacidad_L,Proveedor,Contacto,Nota,Actualizado
+Plantas,Planta de limón persa,Injerto o semilla — POR CONFIRMAR,1.00,,Por confirmar,Dato del socio,¿Injertada o de semilla? Cambia vigor y cuándo da fruta,2026-07-22
+Riego,Bomba centrífuga,2 HP,174.00,,Utrera Electrónica,Franciely Reinoza 0414-214-51-23,2 HP puede ser más de lo necesario para un huerto pequeño,2026-07-22
+Riego,Filtro de agua,1/2 pulgada · 150 psi,7.49,,MercadoLibre (Aquafina),5.0 estrellas · +25 vendidos,Obligatorio antes de goteros. Barato: comprar de una vez,2026-07-22
+Riego,Aspersor / gallito,Aspersión 1/2 pulgada,2.40,,MercadoLibre,4.9 estrellas · +1000 vendidos,Para cítrico en calor suele ganar el goteo,2026-07-22
+Riego,Gotero autocompensado,Por unidad,,,Por confirmar,,FALTA PRECIO — necesario si vamos a goteo,
+Riego,Línea de goteo / manguera,Por metro,,,Por confirmar,,FALTA PRECIO — necesario si vamos a goteo,
+Tanque,Tanque cónico 1000 L,Cónico,110.00,1000,Tanques La Guaira,0424-127-30-25 · Catia La Mar,El más barato por litro,2026-07-22
+Tanque,Tanque cónico 1300 L,Cónico,160.00,1300,Tanques La Guaira,0424-127-30-25 · Catia La Mar,,2026-07-22
+Tanque,Tanque cónico 1650 L,Cónico,200.00,1650,Tanques La Guaira,0424-127-30-25 · Catia La Mar,,2026-07-22
+Tanque,Tanque cilíndrico 400 L,Cilíndrico,90.00,400,Tanques La Guaira,0424-127-30-25 · Catia La Mar,,2026-07-22
+Tanque,Tanque cilíndrico 540 L,Cilíndrico,125.00,540,Tanques La Guaira,0424-127-30-25 · Catia La Mar,,2026-07-22
+Tanque,Tanque cilíndrico 650 L,Cilíndrico,145.00,650,Tanques La Guaira,0424-127-30-25 · Catia La Mar,,2026-07-22
+Tanque,Tanque cilíndrico 800 L,Cilíndrico,158.00,800,Tanques La Guaira,0424-127-30-25 · Catia La Mar,,2026-07-22
+Tanque,Tanque cilíndrico 1050 L,Cilíndrico,199.00,1050,Tanques La Guaira,0424-127-30-25 · Catia La Mar,El mejor por litro entre los cilíndricos,2026-07-22
+Insumos,Abono / fertilizante,Saco (indicar cuántos kg en Nota),,,Por confirmar,,FALTA PRECIO,
+Insumos,Tierra o abono orgánico para el hoyo,Por saco o por camionada,,,Por confirmar,,FALTA PRECIO,
+Servicio,Flete a la parcela (Naiguatá),Por viaje,,,Por confirmar,,FALTA PRECIO — ningún precio de arriba incluye flete,
+Servicio,Mano de obra,Jornal (por día),,,Por confirmar,,FALTA PRECIO — para hoyos y siembra,
+Venta,Precio de venta del limón persa,Por kg al productor,,,Mercado local,,FALTA DATO — esto define si el proyecto es rentable,`;
+
+const CACHE_KEY = 'limonpersa.precios.v1';
+
+/* ---------- Utilidades ---------- */
+
+/** Parser de CSV que respeta comillas, comas y saltos de línea dentro del campo. */
+function parseCSV(texto){
+  const filas = [];
+  let campo = '', fila = [], enComillas = false;
+  const s = texto.replace(/\r\n/g, '\n').replace(/\r/g, '\n');
+  for (let i = 0; i < s.length; i++){
+    const c = s[i];
+    if (enComillas){
+      if (c === '"'){
+        if (s[i+1] === '"'){ campo += '"'; i++; }
+        else enComillas = false;
+      } else campo += c;
+    } else {
+      if (c === '"') enComillas = true;
+      else if (c === ','){ fila.push(campo); campo = ''; }
+      else if (c === '\n'){ fila.push(campo); filas.push(fila); fila = []; campo = ''; }
+      else campo += c;
+    }
+  }
+  if (campo !== '' || fila.length){ fila.push(campo); filas.push(fila); }
+  return filas.filter(f => f.some(v => String(v).trim() !== ''));
+}
+
+/** Convierte las filas en objetos usando la primera fila como encabezado. */
+function aObjetos(filas){
+  if (!filas.length) return [];
+  const cab = filas[0].map(h => String(h).trim());
+  return filas.slice(1).map(f => {
+    const o = {};
+    cab.forEach((h, i) => { o[h] = (f[i] == null ? '' : String(f[i]).trim()); });
+    return o;
+  });
+}
+
+/**
+ * Lee un número escrito por una persona: "1.00", "1,00", "$ 1.234,56", "1 234.56".
+ * Regla: el último separador que aparece es el decimal.
+ */
+function num(v){
+  if (v == null) return null;
+  let s = String(v).trim();
+  if (!s) return null;
+  s = s.replace(/[^0-9.,-]/g, '');
+  if (!s || !/[0-9]/.test(s)) return null;
+  const ultimaComa = s.lastIndexOf(','), ultimoPunto = s.lastIndexOf('.');
+  if (ultimaComa > -1 && ultimoPunto > -1){
+    if (ultimaComa > ultimoPunto) s = s.replace(/\./g, '').replace(',', '.');
+    else s = s.replace(/,/g, '');
+  } else if (ultimaComa > -1){
+    // Una sola coma: decimal si deja 1-2 cifras detrás, si no es de miles.
+    const dec = s.length - ultimaComa - 1;
+    s = (dec === 3) ? s.replace(/,/g, '') : s.replace(',', '.');
+  }
+  const n = parseFloat(s);
+  return isFinite(n) ? n : null;
+}
+
+const usd = n => '$' + n.toLocaleString('es-VE', {minimumFractionDigits:2, maximumFractionDigits:2});
+const esc = t => String(t == null ? '' : t)
+  .replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;');
+
+/* ---------- Estado ---------- */
+let PRECIOS = [];
+
+/** Busca una fila por texto contenido en el Item. Devuelve el objeto o null. */
+function buscar(txt){
+  const t = txt.toLowerCase();
+  return PRECIOS.find(p => (p.Item || '').toLowerCase().includes(t)) || null;
+}
+/** Precio de un ítem buscado por texto; null si no hay precio cargado. */
+function precioDe(txt){
+  const p = buscar(txt);
+  return p ? num(p.Precio_USD) : null;
+}
+
+/* ---------- Render de las tablas ---------- */
+function renderTablas(){
+  const cont = document.getElementById('tablasPrecios');
+  const cats = [];
+  PRECIOS.forEach(p => { if (p.Categoria && !cats.includes(p.Categoria)) cats.push(p.Categoria); });
+
+  // Mejor costo por litro, para marcar el ganador entre los tanques.
+  let mejorPorLitro = Infinity;
+  PRECIOS.forEach(p => {
+    const pr = num(p.Precio_USD), cap = num(p.Capacidad_L);
+    if (pr && cap) mejorPorLitro = Math.min(mejorPorLitro, pr / cap);
+  });
+
+  let html = '';
+  cats.forEach(cat => {
+    const filas = PRECIOS.filter(p => p.Categoria === cat);
+    const hayCap = filas.some(p => num(p.Capacidad_L));
+    html += '<h3>' + esc(cat) + '</h3><div class="tablewrap"><table><thead><tr>' +
+      '<th>Ítem</th><th>Especificación</th><th class="num">Precio</th>' +
+      (hayCap ? '<th class="num">Costo por litro</th>' : '') +
+      '<th>Proveedor / contacto</th><th>Nota</th></tr></thead><tbody>';
+
+    filas.forEach(p => {
+      const pr = num(p.Precio_USD), cap = num(p.Capacidad_L);
+      const falta = pr == null;
+      const porLitro = (pr && cap) ? pr / cap : null;
+      const esMejor = porLitro != null && Math.abs(porLitro - mejorPorLitro) < 1e-9;
+
+      html += '<tr' + (falta ? ' class="falta"' : '') + '>';
+      html += '<td><b>' + esc(p.Item) + '</b>' +
+              (esMejor ? ' <span class="tag mejor">mejor $/L</span>' : '') + '</td>';
+      html += '<td>' + esc(p.Especificacion) + '</td>';
+      html += '<td class="num">' + (falta
+        ? '<span class="tag falta">falta</span>'
+        : '<b>' + usd(pr) + '</b>') + '</td>';
+      if (hayCap) html += '<td class="num">' + (porLitro != null
+        ? '$' + porLitro.toFixed(3) + '/L' : '—') + '</td>';
+      html += '<td>' + esc(p.Proveedor) +
+        (p.Contacto ? '<div class="hint">' + esc(p.Contacto) + '</div>' : '') + '</td>';
+      html += '<td>' + esc(p.Nota) +
+        (p.Actualizado ? '<div class="hint">act. ' + esc(p.Actualizado) + '</div>' : '') + '</td>';
+      html += '</tr>';
+    });
+    html += '</tbody></table></div>';
+  });
+  cont.innerHTML = html;
+
+  renderHallazgo();
+}
+
+/** Compara cónicos vs cilíndricos con los precios que estén cargados ahora. */
+function renderHallazgo(){
+  const caja = document.getElementById('hallazgoTanques');
+  const tanques = PRECIOS.filter(p => num(p.Precio_USD) && num(p.Capacidad_L));
+  if (tanques.length < 2){
+    caja.innerHTML = '<p>Hacen falta al menos dos tanques con precio y capacidad ' +
+      'en la hoja para poder comparar.</p>';
+    return;
+  }
+  const grupo = tipo => {
+    const g = tanques.filter(p =>
+      ((p.Especificacion || '') + ' ' + (p.Item || '')).toLowerCase().includes(tipo));
+    if (!g.length) return null;
+    const vals = g.map(p => num(p.Precio_USD) / num(p.Capacidad_L));
+    return {min: Math.min(...vals), max: Math.max(...vals), n: g.length};
+  };
+  const con = grupo('cónico') || grupo('conico');
+  const cil = grupo('cilíndrico') || grupo('cilindrico');
+
+  if (!con || !cil){
+    caja.innerHTML = '<p>Para comparar hacen falta tanques cónicos y cilíndricos ' +
+      'con precio y capacidad en la hoja.</p>';
+    return;
+  }
+  const veces = (cil.min / con.min);
+  caja.innerHTML =
+    '<p>Con los precios cargados ahora, los <b>tanques cónicos</b> cuestan entre ' +
+    '<b>$' + con.min.toFixed(3) + '</b> y <b>$' + con.max.toFixed(3) + '</b> por litro, ' +
+    'y los <b>cilíndricos</b> entre <b>$' + cil.min.toFixed(3) + '</b> y ' +
+    '<b>$' + cil.max.toFixed(3) + '</b>. Para guardar la misma agua, el cónico rinde ' +
+    '<b>' + veces.toFixed(1) + '× más por dólar</b> en el mejor caso de cada tipo.</p>' +
+    '<p style="margin-bottom:0">→ <b>Salvo que el espacio obligue a otra cosa, comprar cónico.</b> ' +
+    'El cilíndrico solo se justifica si la forma o la huella en el terreno lo exigen.</p>';
+}
+
+/* ---------- Calculadora ---------- */
+function calcular(){
+  const n        = Math.max(1, parseInt(document.getElementById('nPlantas').value) || 0);
+  const marco    = parseFloat(document.getElementById('marco').value) || 5;
+  const metodo   = document.getElementById('metodo').value;
+  const litros   = parseFloat(document.getElementById('litros').value) || 0;
+  const dias     = parseFloat(document.getElementById('autonomia').value) || 1;
+  const conBomba = document.getElementById('bomba').value === 'si';
+
+  const faltantes = [];
+  const lineas = [];
+  let total = 0;
+
+  // Plantas
+  const pPlanta = precioDe('planta de lim');
+  if (pPlanta != null){
+    const c = n * pPlanta;
+    total += c;
+    lineas.push([n + ' plantas × ' + usd(pPlanta), c]);
+  } else faltantes.push('el precio de la planta');
+
+  // Emisores de riego
+  if (metodo === 'goteo'){
+    const pGotero = precioDe('gotero');
+    const nGoteros = n * 2;
+    if (pGotero != null){
+      const c = nGoteros * pGotero;
+      total += c;
+      lineas.push([nGoteros + ' goteros × ' + usd(pGotero), c]);
+    } else {
+      faltantes.push('el precio del gotero (hacen falta ' + nGoteros + ')');
+    }
+    const pLinea = precioDe('línea de goteo') ?? precioDe('linea de goteo') ?? precioDe('manguera');
+    const metros = Math.round(n * marco);
+    if (pLinea != null){
+      const c = metros * pLinea;
+      total += c;
+      lineas.push([metros + ' m de línea × ' + usd(pLinea), c]);
+    } else {
+      faltantes.push('el precio por metro de la línea de goteo (hacen falta ~' + metros + ' m)');
+    }
+  } else {
+    const pAsp = precioDe('aspersor');
+    if (pAsp != null){
+      const c = n * pAsp;
+      total += c;
+      lineas.push([n + ' aspersores × ' + usd(pAsp), c]);
+    } else faltantes.push('el precio del aspersor');
+  }
+
+  // Filtro
+  const pFiltro = precioDe('filtro');
+  if (pFiltro != null){ total += pFiltro; lineas.push(['1 filtro de agua', pFiltro]); }
+  else faltantes.push('el precio del filtro');
+
+  // Bomba
+  if (conBomba){
+    const pBomba = precioDe('bomba');
+    if (pBomba != null){ total += pBomba; lineas.push(['1 bomba centrífuga', pBomba]); }
+    else faltantes.push('el precio de la bomba');
+  }
+
+  // Tanques: se elige el de mejor costo por litro entre los que tienen precio.
+  const necesarioL = n * litros * dias;
+  const tanques = PRECIOS
+    .filter(p => num(p.Precio_USD) && num(p.Capacidad_L))
+    .map(p => ({nombre: p.Item, precio: num(p.Precio_USD), cap: num(p.Capacidad_L),
+                pl: num(p.Precio_USD) / num(p.Capacidad_L)}))
+    .sort((a, b) => a.pl - b.pl);
+
+  if (tanques.length){
+    const t = tanques[0];
+    const cuantos = Math.max(1, Math.ceil(necesarioL / t.cap));
+    const c = cuantos * t.precio;
+    total += c;
+    lineas.push([cuantos + ' × ' + t.nombre + ' (' + Math.round(necesarioL).toLocaleString('es-VE') +
+                 ' L necesarios)', c]);
+  } else faltantes.push('el precio de los tanques');
+
+  // Render
+  let html = '';
+  lineas.forEach(([txt, val]) => {
+    html += '<div class="totline"><span>' + esc(txt) + '</span>' +
+            '<span class="v">' + usd(val) + '</span></div>';
+  });
+  html += '<div class="totline big"><span>Inversión inicial estimada</span>' +
+          '<span class="v">' + usd(total) + '</span></div>';
+  document.getElementById('totales').innerHTML = html;
+
+  // Nota de contexto: área, agua y lo que falta.
+  const areaM2 = n * marco * marco;
+  const areaHa = areaM2 / 10000;
+  let nota = '<b>Contexto:</b> con ' + n + ' plantas a ' + marco + ' m de marco hacen falta ' +
+    'unos <b>' + Math.round(areaM2).toLocaleString('es-VE') + ' m²</b> (' + areaHa.toFixed(2) +
+    ' ha), y el huerto consumiría <b>' + Math.round(n * litros).toLocaleString('es-VE') +
+    ' litros al día</b> con la estimación de ' + litros + ' L por planta.';
+  if (faltantes.length){
+    nota += '<br><br><b>⚠ Este total está incompleto</b> — falta en la hoja: ' +
+      faltantes.join(', ') + '. Tampoco incluye flete, mano de obra, abono, ni la ' +
+      'obra de los hoyos.';
+  } else {
+    nota += '<br><br><b>⚠ No incluye</b> flete a la parcela, mano de obra, abono ni ' +
+      'la obra de los hoyos: esos precios están pendientes en la hoja.';
+  }
+  document.getElementById('notaPresupuesto').innerHTML = nota;
+}
+
+/* ---------- Carga de datos ---------- */
+function aplicar(csv, origen, cuando){
+  PRECIOS = aObjetos(parseCSV(csv));
+  renderTablas();
+  calcular();
+
+  const est = document.getElementById('estado');
+  const txt = document.getElementById('estadoTxt');
+  const pill = document.getElementById('pillPrecios');
+  est.className = 'status ' + (origen === 'sheet' ? 'live' : 'fallback');
+  est.querySelector('.dot').className = 'dot ' + (origen === 'sheet' ? 'live' : 'fallback');
+
+  if (origen === 'sheet'){
+    txt.innerHTML = '<b>Precios en vivo</b> desde el Google Sheet · leídos ' + cuando;
+    pill.textContent = '💲 Precios en vivo';
+  } else if (origen === 'cache'){
+    txt.innerHTML = '<b>Últimos precios guardados</b> en este teléfono (' + cuando +
+      '). No se pudo conectar con el Google Sheet ahora mismo.';
+    pill.textContent = '💲 Precios guardados';
+  } else {
+    txt.innerHTML = '<b>Precios de respaldo</b> del 22/07/2026. ' +
+      (PRECIOS_CSV_URL ? 'No se pudo leer el Google Sheet.'
+                       : 'El Google Sheet todavía no está conectado.');
+    pill.textContent = '💲 Precios de respaldo';
+  }
+  document.getElementById('pieActualizado').innerHTML =
+    'Precios mostrados: ' + esc(txt.textContent) + '.';
+}
+
+async function cargar(){
+  // 1) Pintar algo inmediatamente: caché si hay, si no el respaldo.
+  let pintado = false;
+  try {
+    const guardado = JSON.parse(localStorage.getItem(CACHE_KEY) || 'null');
+    if (guardado && guardado.csv){
+      aplicar(guardado.csv, 'cache', guardado.cuando || 'fecha desconocida');
+      pintado = true;
+    }
+  } catch (e) { /* caché ilegible: se ignora */ }
+  if (!pintado) aplicar(RESPALDO, 'respaldo', '');
+
+  // 2) Intentar el Sheet y sobrescribir si responde.
+  if (!PRECIOS_CSV_URL) return;
+  try {
+    const r = await fetch(PRECIOS_CSV_URL + (PRECIOS_CSV_URL.includes('?') ? '&' : '?') +
+                          'cb=' + Date.now(), {cache: 'no-store'});
+    if (!r.ok) throw new Error('HTTP ' + r.status);
+    const csv = await r.text();
+    if (!/Precio_USD/i.test(csv)) throw new Error('formato inesperado');
+
+    const cuando = new Date().toLocaleString('es-VE');
+    aplicar(csv, 'sheet', cuando);
+    try { localStorage.setItem(CACHE_KEY, JSON.stringify({csv, cuando})); } catch (e) {}
+  } catch (e){
+    const est = document.getElementById('estado');
+    if (!pintado){
+      est.className = 'status error';
+      est.querySelector('.dot').className = 'dot error';
+      document.getElementById('estadoTxt').innerHTML =
+        '<b>No se pudo leer el Google Sheet</b> (' + esc(e.message) +
+        '). Mostrando los precios de respaldo.';
+    }
+  }
+}
+
+/* ---------- Arranque ---------- */
+['nPlantas','marco','metodo','litros','autonomia','bomba'].forEach(id => {
+  document.getElementById(id).addEventListener('input', calcular);
+  document.getElementById(id).addEventListener('change', calcular);
+});
+document.getElementById('btnRefresh').addEventListener('click', cargar);
+cargar();
+</script>
+</body>
+</html>

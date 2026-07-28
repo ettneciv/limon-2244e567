@@ -1,0 +1,20 @@
+Categoria,Item,Especificacion,Precio_USD,Capacidad_L,Proveedor,Contacto,Nota,Actualizado
+Plantas,Planta de limón persa,Injerto o semilla — POR CONFIRMAR,1.00,,Por confirmar,Dato del socio,¿Injertada o de semilla? Cambia vigor y cuándo da fruta,2026-07-22
+Riego,Bomba centrífuga,2 HP,174.00,,Utrera Electrónica,Franciely Reinoza 0414-214-51-23,2 HP puede ser más de lo necesario para un huerto pequeño,2026-07-22
+Riego,Filtro de agua,1/2 pulgada · 150 psi,7.49,,MercadoLibre (Aquafina),5.0 estrellas · +25 vendidos,Obligatorio antes de goteros. Barato: comprar de una vez,2026-07-22
+Riego,Aspersor / gallito,Aspersión 1/2 pulgada,2.40,,MercadoLibre,4.9 estrellas · +1000 vendidos,Para cítrico en calor suele ganar el goteo,2026-07-22
+Riego,Gotero autocompensado,Por unidad,,,Por confirmar,,FALTA PRECIO — necesario si vamos a goteo,
+Riego,Línea de goteo / manguera,Por metro,,,Por confirmar,,FALTA PRECIO — necesario si vamos a goteo,
+Tanque,Tanque cónico 1000 L,Cónico,110.00,1000,Tanques La Guaira,0424-127-30-25 · Catia La Mar,El más barato por litro,2026-07-22
+Tanque,Tanque cónico 1300 L,Cónico,160.00,1300,Tanques La Guaira,0424-127-30-25 · Catia La Mar,,2026-07-22
+Tanque,Tanque cónico 1650 L,Cónico,200.00,1650,Tanques La Guaira,0424-127-30-25 · Catia La Mar,,2026-07-22
+Tanque,Tanque cilíndrico 400 L,Cilíndrico,90.00,400,Tanques La Guaira,0424-127-30-25 · Catia La Mar,,2026-07-22
+Tanque,Tanque cilíndrico 540 L,Cilíndrico,125.00,540,Tanques La Guaira,0424-127-30-25 · Catia La Mar,,2026-07-22
+Tanque,Tanque cilíndrico 650 L,Cilíndrico,145.00,650,Tanques La Guaira,0424-127-30-25 · Catia La Mar,,2026-07-22
+Tanque,Tanque cilíndrico 800 L,Cilíndrico,158.00,800,Tanques La Guaira,0424-127-30-25 · Catia La Mar,,2026-07-22
+Tanque,Tanque cilíndrico 1050 L,Cilíndrico,199.00,1050,Tanques La Guaira,0424-127-30-25 · Catia La Mar,El mejor por litro entre los cilíndricos,2026-07-22
+Insumos,Abono / fertilizante,Saco (indicar cuántos kg en Nota),,,Por confirmar,,FALTA PRECIO,
+Insumos,Tierra o abono orgánico para el hoyo,Por saco o por camionada,,,Por confirmar,,FALTA PRECIO,
+Servicio,Flete a la parcela (Naiguatá),Por viaje,,,Por confirmar,,FALTA PRECIO — ningún precio de arriba incluye flete,
+Servicio,Mano de obra,Jornal (por día),,,Por confirmar,,FALTA PRECIO — para hoyos y siembra,
+Venta,Precio de venta del limón persa,Por kg al productor,,,Mercado local,,FALTA DATO — esto define si el proyecto es rentable,
