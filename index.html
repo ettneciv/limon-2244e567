@@ -82,6 +82,15 @@
     color:inherit;cursor:pointer}
   button.refresh:hover{background:rgba(255,255,255,.6)}
 
+  .btnlink{display:inline-flex;align-items:center;gap:9px;text-decoration:none;
+    background:var(--brand);color:#fff;font-weight:600;font-size:15.5px;
+    padding:12px 18px;border-radius:11px;box-shadow:var(--shadow);
+    margin:4px 0;border:1px solid var(--brand-dark)}
+  .btnlink:hover{background:var(--brand-dark);color:#fff}
+  .btnlink .ic{font-size:19px;line-height:1}
+  .sinlink{display:block;background:#fdf8e8;border:1px dashed #ecdba6;
+    border-radius:11px;padding:12px 15px;font-size:14px;color:#6b5510;margin:6px 0}
+
   .calc{display:grid;gap:13px}
   @media(min-width:700px){.calc{grid-template-columns:1fr 1fr}}
   label{display:block;font-size:13.5px;font-weight:600;margin-bottom:4px;color:var(--muted)}
@@ -219,6 +228,16 @@
     <span id="estadoTxt">Cargando precios…</span>
     <button class="refresh" id="btnRefresh" type="button">Actualizar</button>
   </div>
+
+  <p style="margin:10px 0 0">
+    <a class="btnlink js-sheet" href="#" target="_blank" rel="noopener" hidden>
+      <span class="ic">📊</span> Abrir la hoja de precios para editarla
+    </a>
+  </p>
+  <span class="sinlink js-sinsheet" hidden>
+    ⏳ La hoja de precios todavía no está creada. Cuando exista, aquí aparecerá el
+    botón para abrirla.
+  </span>
 
   <div class="callout">
     <p><b>Estos son precios observados, no cotizaciones en firme.</b> No incluyen
@@ -484,8 +503,18 @@
 
   <div class="card">
     <div class="step"><div class="n">1</div><div>
-      Abre el <b>Google Sheet del proyecto</b> (el enlace te lo pasa tu socio; se
-      abre con la app de Google Sheets en el teléfono).</div></div>
+      Abre la <b>hoja de precios del proyecto</b> con este botón. Se abre con la
+      app de Google Sheets en el teléfono.
+      <div style="margin-top:8px">
+        <a class="btnlink js-sheet" href="#" target="_blank" rel="noopener" hidden>
+          <span class="ic">📊</span> Abrir la hoja de precios
+        </a>
+        <span class="sinlink js-sinsheet" hidden>
+          ⏳ La hoja todavía no está creada. Cuando exista, el enlace aparece aquí
+          y también arriba, en la sección de precios.
+        </span>
+      </div>
+    </div></div>
     <div class="step"><div class="n">2</div><div>
       Busca la fila del producto y escribe el precio nuevo en la columna
       <b>Precio_USD</b>. Pon la fecha de hoy en <b>Actualizado</b> para que se sepa
@@ -529,13 +558,34 @@
 
 <script>
 /* ==========================================================================
-   CONFIGURACIÓN — pega aquí la URL CSV del Google Sheet.
-   Cómo obtenerla: en el Sheet → Archivo → Compartir → Publicar en la web
-   → pestaña "Precios" → formato "Valores separados por comas (.csv)"
-   → Publicar → copiar el enlace (termina en output=csv).
-   Si se deja vacío, la página usa la copia de respaldo de abajo.
+   CONFIGURACIÓN — sólo hace falta rellenar SHEET_URL.
+
+   SHEET_URL: el enlace normal del Google Sheet (el que sale al darle
+   "Compartir → Copiar vínculo"). Sirve para dos cosas: pinta el botón
+   "Abrir la hoja de precios" que usa el socio, y de él se deduce solo el
+   enlace para leer los precios.
+   Para que la lectura funcione, el Sheet debe estar compartido como
+   "Cualquier persona con el enlace: Lector" y la pestaña llamarse "Precios".
+
+   PRECIOS_CSV_URL: opcional. Sólo si prefieres "Archivo → Compartir →
+   Publicar en la web → CSV"; pega aquí ese enlace (termina en output=csv)
+   y tiene prioridad sobre lo que se deduzca de SHEET_URL.
+
+   Con los dos vacíos, la página usa la copia de respaldo de abajo y lo avisa.
    ========================================================================== */
+const SHEET_URL       = '';
 const PRECIOS_CSV_URL = '';
+const HOJA            = 'Precios';   // nombre de la pestaña dentro del Sheet
+
+/** Saca el id de un enlace .../spreadsheets/d/<ID>/... y arma la URL CSV. */
+function csvDesdeSheet(url){
+  const m = String(url || '').match(/\/spreadsheets\/d\/([a-zA-Z0-9-_]+)/);
+  if (!m) return '';
+  return 'https://docs.google.com/spreadsheets/d/' + m[1] +
+         '/gviz/tq?tqx=out:csv&sheet=' + encodeURIComponent(HOJA);
+}
+
+const CSV_URL = PRECIOS_CSV_URL || csvDesdeSheet(SHEET_URL);
 
 /* Copia de respaldo: los precios conocidos al 22/07/2026. Se usan si el Sheet
    todavía no está conectado o si no hay internet y no hay nada en caché. */
@@ -852,8 +902,8 @@ function aplicar(csv, origen, cuando){
     pill.textContent = '💲 Precios guardados';
   } else {
     txt.innerHTML = '<b>Precios de respaldo</b> del 22/07/2026. ' +
-      (PRECIOS_CSV_URL ? 'No se pudo leer el Google Sheet.'
-                       : 'El Google Sheet todavía no está conectado.');
+      (CSV_URL ? 'No se pudo leer el Google Sheet.'
+               : 'El Google Sheet todavía no está conectado.');
     pill.textContent = '💲 Precios de respaldo';
   }
   document.getElementById('pieActualizado').innerHTML =
@@ -873,13 +923,17 @@ async function cargar(){
   if (!pintado) aplicar(RESPALDO, 'respaldo', '');
 
   // 2) Intentar el Sheet y sobrescribir si responde.
-  if (!PRECIOS_CSV_URL) return;
+  if (!CSV_URL) return;
   try {
-    const r = await fetch(PRECIOS_CSV_URL + (PRECIOS_CSV_URL.includes('?') ? '&' : '?') +
+    const r = await fetch(CSV_URL + (CSV_URL.includes('?') ? '&' : '?') +
                           'cb=' + Date.now(), {cache: 'no-store'});
     if (!r.ok) throw new Error('HTTP ' + r.status);
     const csv = await r.text();
-    if (!/Precio_USD/i.test(csv)) throw new Error('formato inesperado');
+    if (!/Precio_USD/i.test(csv)) {
+      throw new Error('la hoja no se dejó leer — revisa que esté compartida ' +
+                      'como "cualquier persona con el enlace" y que la pestaña ' +
+                      'se llame "' + HOJA + '"');
+    }
 
     const cuando = new Date().toLocaleString('es-VE');
     aplicar(csv, 'sheet', cuando);
@@ -897,6 +951,17 @@ async function cargar(){
 }
 
 /* ---------- Arranque ---------- */
+
+/* Botón "Abrir la hoja de precios": sólo se muestra si SHEET_URL está puesto.
+   Si no, en su lugar queda el aviso de que la hoja aún no existe. */
+(function enlaceHoja(){
+  const hay = !!SHEET_URL;
+  document.querySelectorAll('.js-sheet').forEach(a => {
+    if (hay){ a.href = SHEET_URL; a.hidden = false; }
+  });
+  document.querySelectorAll('.js-sinsheet').forEach(e => { e.hidden = hay; });
+})();
+
 ['nPlantas','marco','metodo','litros','autonomia','bomba'].forEach(id => {
   document.getElementById(id).addEventListener('input', calcular);
   document.getElementById(id).addEventListener('change', calcular);
