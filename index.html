@@ -505,6 +505,17 @@
      de programación: se edita una hoja de cálculo normal, desde el teléfono.</p>
 
   <div class="card">
+    <div class="callout" style="margin-top:0">
+      <p><b>¿Todavía no existe la hoja?</b> Descarga la plantilla ya formateada
+        (cabecera de colores, desplegables, filtros y el costo por litro
+        calculado solo) y súbela a Google Drive:</p>
+      <p style="margin-bottom:0">
+        <a class="btnlink" href="precios-limonpersa.xlsx" download>
+          <span class="ic">⬇️</span> Descargar la plantilla de precios (Excel)
+        </a>
+      </p>
+    </div>
+
     <div class="step"><div class="n">1</div><div>
       Abre la <b>hoja de precios del proyecto</b> con este botón. Se abre con la
       app de Google Sheets en el teléfono.
@@ -640,15 +651,43 @@ function parseCSV(texto){
   return filas.filter(f => f.some(v => String(v).trim() !== ''));
 }
 
+/** Normaliza un encabezado: minúsculas, sin acentos, sin espacios ni signos. */
+function normCab(h){
+  return String(h).toLowerCase()
+    .normalize('NFD')             // separa el acento de la letra
+    .replace(/[^a-z0-9]/g, '');   // y lo elimina, junto a espacios y signos
+}
+
+/* Acepta los dos juegos de encabezados: los del CSV simple (Precio_USD) y los
+   bonitos de la plantilla Excel ("Precio (USD)", "Ítem (qué es)"…). */
+const CABECERAS = {
+  categoria:'Categoria',
+  item:'Item', itemquees:'Item',
+  especificacion:'Especificacion',
+  preciousd:'Precio_USD', precio:'Precio_USD',
+  capacidadl:'Capacidad_L', capacidad:'Capacidad_L',
+  costoporlitro:'Costo_por_litro',
+  proveedor:'Proveedor',
+  ubicacion:'Ubicacion',
+  contacto:'Contacto', contactoofuente:'Contacto',
+  estado:'Estado',
+  fecha:'Actualizado', actualizado:'Actualizado',
+  enlace:'Enlace',
+  nota:'Nota', notas:'Nota',
+};
+
 /** Convierte las filas en objetos usando la primera fila como encabezado. */
 function aObjetos(filas){
   if (!filas.length) return [];
-  const cab = filas[0].map(h => String(h).trim());
+  const cab = filas[0].map(h => {
+    const n = normCab(h);
+    return CABECERAS[n] || n;
+  });
   return filas.slice(1).map(f => {
     const o = {};
     cab.forEach((h, i) => { o[h] = (f[i] == null ? '' : String(f[i]).trim()); });
     return o;
-  });
+  }).filter(o => (o.Item || '').trim() !== '');   // descarta las filas vacías
 }
 
 /**
@@ -721,8 +760,11 @@ function renderTablas(){
       const esMejor = porLitro != null && Math.abs(porLitro - mejorPorLitro) < 1e-9;
 
       html += '<tr' + (falta ? ' class="falta"' : '') + '>';
+      const estado = (p.Estado || '').trim();
       html += '<td><b>' + esc(p.Item) + '</b>' +
-              (esMejor ? ' <span class="tag mejor">mejor $/L</span>' : '') + '</td>';
+              (esMejor ? ' <span class="tag mejor">mejor $/L</span>' : '') +
+              (estado ? '<div style="margin-top:5px"><span class="tag">' +
+                        esc(estado) + '</span></div>' : '') + '</td>';
       html += '<td>' + esc(p.Especificacion) + '</td>';
       html += '<td class="num">' + (falta
         ? '<span class="tag falta">falta</span>'
@@ -932,7 +974,10 @@ async function cargar(){
                           'cb=' + Date.now(), {cache: 'no-store'});
     if (!r.ok) throw new Error('HTTP ' + r.status);
     const csv = await r.text();
-    if (!/Precio_USD/i.test(csv)) {
+    // Se valida sobre lo ya interpretado: así sirve igual el CSV simple que la
+    // plantilla Excel, que trae los encabezados con acentos y paréntesis.
+    const prueba = aObjetos(parseCSV(csv));
+    if (!prueba.length || !('Precio_USD' in prueba[0])) {
       throw new Error('la hoja no se dejó leer — revisa que esté compartida ' +
                       'como "cualquier persona con el enlace" y que la pestaña ' +
                       'se llame "' + HOJA + '"');
