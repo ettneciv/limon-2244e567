@@ -33,12 +33,15 @@
   .pill{display:inline-flex;padding:6px 11px;border-radius:999px;
     background:rgba(255,255,255,.16);font-size:13px}
 
-  nav{position:sticky;top:0;z-index:30;overflow-x:auto;white-space:nowrap;
+  /* Las pestañas se reparten en varias líneas: nunca scroll horizontal. */
+  nav{position:sticky;top:0;z-index:30;
     background:rgba(255,255,255,.97);border-bottom:1px solid var(--line);
     -webkit-backdrop-filter:blur(10px);backdrop-filter:blur(10px)}
-  nav .wrap{display:flex;gap:3px;padding:7px 0}
-  nav a{text-decoration:none;color:var(--ink);padding:8px 11px;border-radius:8px;
-    font-size:14px;font-weight:500}
+  nav .wrap{display:flex;flex-wrap:wrap;gap:4px;padding:8px 0}
+  nav a{text-decoration:none;color:var(--ink);padding:7px 10px;border-radius:8px;
+    font-size:13.5px;font-weight:500;background:var(--brand-soft);
+    border:1px solid transparent}
+  nav a:hover{border-color:var(--brand)}
   nav a:hover{background:var(--brand-soft);color:var(--brand-dark)}
 
   main{padding:18px 0 60px}
@@ -172,6 +175,7 @@
   <a href="#parcela">La parcela</a>
   <a href="#plantacion">Plantación</a>
   <a href="#riego">Riego</a>
+  <a href="#bombeo">Bombeo y gravedad</a>
   <a href="#sanidad">Sanidad</a>
   <a href="#negocio">Negocio</a>
   <a href="#decisiones">Decisiones</a>
@@ -378,9 +382,20 @@
         <div class="hint">Plantas que no prenden. Se reponen o se pierden.</div>
       </div>
       <div>
-        <label for="pGasto">Gasto anual de mantenimiento ($)</label>
-        <input type="number" id="pGasto" value="0" min="0" step="10">
-        <div class="hint">Agua, energía, abono y mano de obra al año. 0 = no contarlo.</div>
+        <label for="pJornales">Jornales al año (días de trabajo contratado)</label>
+        <input type="number" id="pJornales" value="36" min="0" max="365" step="1">
+        <div class="hint">Siembra, limpieza del terreno y mantenimiento. 36 = tres
+          días al mes. <b>Es una estimación — ajústala a lo que acuerden.</b></div>
+      </div>
+      <div>
+        <label for="pPrecioJornal">Precio del jornal ($/día)</label>
+        <input type="number" id="pPrecioJornal" value="0" min="0" step="0.5">
+        <div class="hint" id="hintJornal">Está en la hoja como dato pendiente.</div>
+      </div>
+      <div>
+        <label for="pOtros">Otros gastos anuales ($)</label>
+        <input type="number" id="pOtros" value="0" min="0" step="10">
+        <div class="hint">Agua, energía, abono y repuestos del riego.</div>
       </div>
     </div>
 
@@ -553,6 +568,209 @@
       <p>Si vamos a goteo, el <b>filtro va antes de los goteros</b> sí o sí: se tapan
         con sedimento y se pierde la línea. A $7,49 es la pieza más barata del
         sistema y la que más problemas evita. Ya tenemos uno de ½" cotizado.</p>
+    </div>
+  </div>
+</section>
+
+<!-- ============ BOMBEO Y GRAVEDAD ============ -->
+<section id="bombeo">
+  <h2>Bombeo cuesta arriba y riego por gravedad</h2>
+  <p class="lead">La idea es <b>subir el agua una vez</b> con la bomba hasta un
+     tanque alto, y de ahí <b>regar por gravedad</b>, sin bomba. Es un buen
+     esquema: la bomba trabaja poco y a horas convenientes, y el riego funciona
+     aunque no haya luz — algo importante en Venezuela.</p>
+
+  <div class="card">
+    <h3 style="margin-top:0">1 · ¿Qué bomba hace falta para subir el agua?</h3>
+    <div class="calc">
+      <div>
+        <label for="bAltura">Altura vertical a subir (m)</label>
+        <input type="number" id="bAltura" value="20" min="1" max="200" step="1">
+        <div class="hint">Del nivel del agua al punto de entrada del tanque alto.</div>
+      </div>
+      <div>
+        <label for="bCaudal">Caudal deseado (litros por minuto)</label>
+        <input type="number" id="bCaudal" value="30" min="1" max="1000" step="1">
+        <div class="hint">Cuanto más despacio llene, más pequeña la bomba.</div>
+      </div>
+      <div>
+        <label for="bLongitud">Longitud de la tubería (m)</label>
+        <input type="number" id="bLongitud" value="100" min="1" max="2000" step="5">
+        <div class="hint">El recorrido real del tubo, no la distancia en línea recta.</div>
+      </div>
+      <div>
+        <label for="bDiam">Diámetro de la tubería</label>
+        <select id="bDiam">
+          <option value="15">1/2 pulgada (15 mm)</option>
+          <option value="20">3/4 pulgada (20 mm)</option>
+          <option value="26" selected>1 pulgada (26 mm)</option>
+          <option value="34">1¼ pulgada (34 mm)</option>
+          <option value="40">1½ pulgada (40 mm)</option>
+          <option value="52">2 pulgadas (52 mm)</option>
+        </select>
+        <div class="hint">Diámetro interior aproximado de PVC.</div>
+      </div>
+      <div>
+        <label for="bEfic">Eficiencia del conjunto bomba + motor (%)</label>
+        <input type="number" id="bEfic" value="55" min="20" max="85" step="5">
+        <div class="hint">Las bombas pequeñas de superficie suelen andar por 50–60 %.</div>
+      </div>
+      <div>
+        <label for="bTanque">Volumen del tanque a llenar (L)</label>
+        <input type="number" id="bTanque" value="1000" min="50" max="20000" step="50">
+        <div class="hint">Para calcular cuánto tarda en llenarse.</div>
+      </div>
+    </div>
+
+    <div class="hitos" id="hitosBomba"></div>
+    <div class="totals" id="detalleBomba"></div>
+    <div class="callout" id="veredictoBomba" style="margin-bottom:0"></div>
+  </div>
+
+  <div class="card">
+    <h3 style="margin-top:0">2 · ¿Cuánta presión da la gravedad?</h3>
+    <p>La presión que consigues por gravedad depende <b>solo de la altura</b> del
+      tanque sobre las plantas — no del tamaño del tanque. Cada metro de altura
+      da 0,098 bar (1,42 psi).</p>
+    <div class="calc">
+      <div>
+        <label for="gAltura">Altura del tanque sobre el cultivo (m)</label>
+        <input type="number" id="gAltura" value="10" min="0.5" max="100" step="0.5">
+        <div class="hint">Del fondo del tanque al gotero más alto del huerto.</div>
+      </div>
+      <div>
+        <label for="gPerdida">Pérdida estimada en las líneas de riego (m)</label>
+        <input type="number" id="gPerdida" value="2" min="0" max="30" step="0.5">
+        <div class="hint">Fricción en mangueras, filtro y accesorios.</div>
+      </div>
+    </div>
+    <div class="hitos" id="hitosGravedad"></div>
+    <div class="tablewrap"><table id="tablaEmisores"></table></div>
+    <div class="callout" id="veredictoGravedad" style="margin-bottom:0"></div>
+  </div>
+
+  <h3>Ideas para el riego por gravedad</h3>
+  <div class="grid c2">
+    <div class="card">
+      <h3 style="margin-top:0">El tanque alto es el corazón del sistema</h3>
+      <ul class="clean" style="margin-top:0">
+        <li><b>Súbelo lo que puedas.</b> La altura es gratis después de construirla,
+          y es lo único que te da presión. Si el terreno tiene una loma, aprovéchala
+          antes que construir una torre.</li>
+        <li><b>Salida por el fondo</b>, con el filtro justo después.</li>
+        <li><b>Deja un dedo de fondo muerto:</b> pon la toma unos centímetros por
+          encima del fondo para que el sedimento no se vaya a los goteros.</li>
+        <li><b>Tápalo.</b> A la luz crecen algas, y las algas tapan goteros.</li>
+        <li><b>Flotador</b> en la entrada para que la bomba no lo desborde.</li>
+      </ul>
+    </div>
+    <div class="card">
+      <h3 style="margin-top:0">Goteo, no aspersión</h3>
+      <p>Con gravedad, el goteo es casi la única opción sensata: los aspersores
+        necesitan bastante más presión de la que da un tanque a altura razonable.
+        Y en cítrico el goteo gana igual — menos agua, no moja la hoja (menos
+        hongos), y lleva el agua a la raíz.</p>
+      <p class="hint">La calculadora de arriba te dice exactamente qué emisores
+        aguanta tu altura.</p>
+    </div>
+    <div class="card">
+      <h3 style="margin-top:0">Sectores por turnos</h3>
+      <p>Con poca presión no intentes regar todo a la vez. Divide el huerto en
+        <b>sectores</b> y riega uno cada vez con una llave: cada sector recibe
+        toda la presión y el caudal disponibles. Es más lento pero funciona;
+        regar todo junto no funciona.</p>
+    </div>
+    <div class="card">
+      <h3 style="margin-top:0">Que las líneas vayan a nivel</h3>
+      <p>Si una línea de goteo baja por una pendiente, los goteros de abajo botan
+        más agua que los de arriba. Traza las líneas <b>siguiendo la curva de
+        nivel</b> (a la misma altura), y baja de nivel con la tubería principal.
+        Si el desnivel dentro de una línea es grande, hacen falta goteros
+        <b>autocompensados</b>, que dan lo mismo a distinta presión.</p>
+    </div>
+    <div class="card">
+      <h3 style="margin-top:0">El filtro no es opcional</h3>
+      <p>Con gravedad hay poca presión para arrastrar suciedad, así que un gotero
+        tapado se queda tapado. Filtro siempre, y <b>límpialo seguido</b>. Pon
+        además un lavado de punta: deja el final de cada línea con un tapón que
+        puedas abrir para purgar el sedimento.</p>
+    </div>
+    <div class="card">
+      <h3 style="margin-top:0">Bombea cuando convenga, riega cuando toque</h3>
+      <p>Separar el bombeo del riego es la gran ventaja de este esquema. Puedes
+        subir el agua cuando hay luz o cuando el pozo rinde, y regar de madrugada
+        o al atardecer, que es cuando menos se evapora — sin depender de que haya
+        electricidad en ese momento.</p>
+    </div>
+  </div>
+
+  <h3>¿Qué hay que agregarle al agua?</h3>
+
+  <div class="callout danger">
+    <p><b>Antes de agregar nada: el análisis de agua.</b> Sin saber el pH, la
+      salinidad (conductividad eléctrica) y los cloruros, cualquier receta es a
+      ciegas y puede hacer daño. Es la misma pregunta abierta que bloquea la
+      elección del patrón. <b>Primero se mide, después se corrige.</b></p>
+  </div>
+
+  <div class="grid c2">
+    <div class="card">
+      <h3 style="margin-top:0">1 · Fertilizante (fertirriego)</h3>
+      <p>Es lo principal que se le echa al agua. Aprovecha la instalación de goteo
+        para repartir el abono disuelto, poco a poco y justo en la raíz — mucho
+        más eficiente que tirarlo al suelo.</p>
+      <ul class="clean">
+        <li><b>Nitrógeno, fósforo y potasio (NPK)</b> — el potasio pesa más
+          cuando el árbol está cargando fruta.</li>
+        <li><b>Calcio y magnesio</b> según lo que ya traiga el agua y el suelo.</li>
+        <li><b>Micronutrientes</b> — el cítrico es muy propenso a faltarle
+          <b>zinc, hierro y manganeso</b>, sobre todo en suelos alcalinos. Se ve
+          en las hojas jóvenes, amarillas entre las nervaduras.</li>
+      </ul>
+      <p class="hint">Las dosis salen del análisis de agua y de suelo más la edad
+        del árbol. No las inventamos aquí.</p>
+    </div>
+
+    <div class="card">
+      <h3 style="margin-top:0">2 · Corrección del pH</h3>
+      <p>Si el agua es alcalina (pH alto), pasan dos cosas malas: el árbol absorbe
+        peor el hierro y el zinc, y se forman <b>incrustaciones de cal</b> que
+        tapan los goteros desde dentro.</p>
+      <p>Se corrige inyectando un ácido en el riego. Cuál y cuánto depende del
+        análisis — no es algo para probar a ojo.</p>
+    </div>
+
+    <div class="card">
+      <h3 style="margin-top:0">3 · Mantener los goteros limpios</h3>
+      <p>En goteo, la obturación es la avería típica. Se previene con dos
+        tratamientos periódicos, <b>nunca a la vez</b>:</p>
+      <ul class="clean">
+        <li><b>Lavado ácido</b> para disolver la cal.</li>
+        <li><b>Cloro</b> para algas y limos biológicos.</li>
+      </ul>
+      <div class="callout danger" style="margin:10px 0 0">
+        <p style="margin:0"><b>⚠ Nunca mezcles cloro y ácido.</b> Juntos liberan
+          gas cloro, que es tóxico. Se aplican en riegos distintos, con enjuague
+          de por medio.</p>
+      </div>
+    </div>
+
+    <div class="card">
+      <h3 style="margin-top:0">4 · Si el agua sale salina</h3>
+      <p>Este es el riesgo real de la costa, y conviene decirlo claro:
+        <b>no hay nada que echarle al agua para quitarle la sal.</b> Lo que se
+        hace es otra cosa:</p>
+      <ul class="clean">
+        <li><b>Regar de más a propósito</b> (fracción de lavado): dar algo más de
+          agua de la que consume el árbol, para arrastrar la sal por debajo de las
+          raíces. Con goteo funciona bien, pero <b>exige que el suelo drene</b>.</li>
+        <li><b>Elegir un patrón tolerante a la salinidad</b> — decisión que se
+          toma antes de comprar la planta, no después.</li>
+        <li>En suelos sódicos se usa <b>yeso agrícola</b>, pero eso corrige el
+          suelo, no el agua.</li>
+      </ul>
+      <p class="hint">Por eso el análisis de agua es lo primero: si sale muy
+        salina, cambia el patrón, el diseño del riego y hasta la viabilidad.</p>
     </div>
   </div>
 </section>
@@ -1085,7 +1303,11 @@ function proyectar(){
   const kgMax   = kgMaduro();
   const precio  = parseFloat(document.getElementById('pPrecio').value)  || 0;
   const merma   = (parseFloat(document.getElementById('pMerma').value)  || 0) / 100;
-  const gasto   = parseFloat(document.getElementById('pGasto').value)   || 0;
+  const jornales    = parseFloat(document.getElementById('pJornales').value) || 0;
+  const precJornal  = parseFloat(document.getElementById('pPrecioJornal').value) || 0;
+  const otros       = parseFloat(document.getElementById('pOtros').value) || 0;
+  const costoMano   = jornales * precJornal;
+  const gasto       = costoMano + otros;
   const vivas   = Math.round(n * (1 - merma));
 
   const filas = CURVA.map((pct, i) => {
@@ -1137,10 +1359,18 @@ function proyectar(){
   }
   nota += '<br><br>Recuerda que los <b>dos primeros años no entra nada</b>: hay que ' +
     'sostener el riego y el mantenimiento sin ingreso.';
-  if (precio > 0 && gasto === 0){
-    nota += '<br><br>⚠ <b>El año de recuperación está inflado:</b> tienes el gasto ' +
-      'anual en 0, así que la cuenta ignora agua, energía, abono y mano de obra. ' +
-      'Pon una cifra aunque sea aproximada para que el número signifique algo.';
+  if (gasto > 0){
+    nota += '<br><br><b>Gasto anual contado:</b> ' + usd(gasto) + ' — ' +
+      (costoMano > 0 ? jornales + ' jornales × ' + usd(precJornal) + ' = ' +
+                       usd(costoMano) : 'sin mano de obra') +
+      (otros > 0 ? ' más ' + usd(otros) + ' de otros gastos' : '') +
+      '. En 10 años son <b>' + usd(gasto * 10) + '</b>, bastante más que la ' +
+      'inversión inicial: en un cultivo de años, <b>el gasto corriente pesa más ' +
+      'que la compra del equipo</b>.';
+  } else if (precio > 0){
+    nota += '<br><br>⚠ <b>El año de recuperación está inflado:</b> el gasto anual ' +
+      'está en 0, así que la cuenta ignora la mano de obra, el agua y el abono. ' +
+      'Pon el precio del jornal para que el número signifique algo.';
   }
   document.getElementById('notaProy').innerHTML = nota;
 }
@@ -1236,20 +1466,192 @@ function tablaProyeccion(filas, precio, gasto){
   document.getElementById('tablaProy').innerHTML = h + '</tbody>';
 }
 
-/** Toma el precio de venta de la hoja, si el socio ya lo llenó. */
-function precioDeVenta(){
-  const fila = PRECIOS.find(p => /venta/i.test(p.Categoria || '') ||
-                                 /precio de venta/i.test(p.Item || ''));
+/** Rellena un campo con un precio de la hoja, si el socio ya lo llenó. */
+function desdeLaHoja(idInput, idHint, buscar, unidad){
+  const inp  = document.getElementById(idInput);
+  const hint = document.getElementById(idHint);
+  if (!inp || !hint) return;
+  const fila = PRECIOS.find(buscar);
   const v = fila ? num(fila.Precio_USD) : null;
-  const inp  = document.getElementById('pPrecio');
-  const hint = document.getElementById('hintPrecio');
-  if (!inp) return;
   if (v != null && v > 0){
     if (!inp.dataset.tocado) inp.value = v;
-    hint.innerHTML = '✅ Tomado de la hoja: <b>' + usd(v) + '</b> por kg.';
+    hint.innerHTML = '✅ Tomado de la hoja: <b>' + usd(v) + '</b> ' + unidad + '.';
   } else {
     hint.innerHTML = '⏳ Todavía no está en la hoja. Escríbelo aquí para simular, ' +
                      'o pídeselo al socio.';
+  }
+}
+
+/** Precio de venta del limón y precio del jornal, ambos desde la hoja. */
+function preciosDeLaHoja(){
+  desdeLaHoja('pPrecio', 'hintPrecio',
+    p => /venta/i.test(p.Categoria || '') || /precio de venta/i.test(p.Item || ''),
+    'por kg');
+  desdeLaHoja('pPrecioJornal', 'hintJornal',
+    p => /mano de obra|jornal/i.test((p.Item || '') + ' ' + (p.Especificacion || '')),
+    'por jornal');
+}
+
+/* ================= BOMBEO Y RIEGO POR GRAVEDAD =================
+   Pérdida de carga por Hazen-Williams (la fórmula estándar para agua):
+     hf = 10,67 · L · Q^1,852 / (C^1,852 · D^4,87)     [m]
+   Potencia hidráulica: P = ρ·g·Q·H  [W]; al motor se divide por la eficiencia. */
+const G_ACEL = 9.81, RHO_AGUA = 1000, C_PVC = 150;
+const HP_W = 745.7;
+
+function friccion(Q, L, D, C){
+  return 10.67 * L * Math.pow(Q, 1.852) / (Math.pow(C, 1.852) * Math.pow(D, 4.87));
+}
+
+const val = id => parseFloat(document.getElementById(id).value) || 0;
+
+function calcularBomba(){
+  const H0   = val('bAltura');
+  const Qlm  = val('bCaudal');
+  const L    = val('bLongitud');
+  const Dmm  = val('bDiam');
+  const efic = Math.max(1, val('bEfic')) / 100;
+  const Vtq  = val('bTanque');
+
+  const Q = Qlm / 60000;          // m³/s
+  const D = Dmm / 1000;           // m
+  const area = Math.PI * D * D / 4;
+  const vel  = Q / area;          // m/s
+
+  const hf = friccion(Q, L, D, C_PVC);
+  const H  = H0 + hf;             // altura manométrica total
+
+  const Ph = RHO_AGUA * G_ACEL * Q * H;   // W hidráulicos
+  const Pm = Ph / efic;                   // W en el eje/motor
+  const hp = Pm / HP_W;
+
+  const COMERCIALES = [0.25, 0.5, 0.75, 1, 1.5, 2, 3, 5];
+  const rec = COMERCIALES.find(x => x >= hp * 1.15) || Math.ceil(hp);
+  const minutos = Qlm > 0 ? Vtq / Qlm : 0;
+
+  document.getElementById('hitosBomba').innerHTML =
+    hito(hp.toFixed(2) + ' HP', 'Potencia mínima necesaria', 'en el eje') +
+    hito(rec + ' HP', 'Bomba comercial a comprar', 'con 15 % de margen') +
+    hito(minutos < 60 ? Math.round(minutos) + ' min'
+                      : (minutos/60).toFixed(1) + ' h',
+         'Tarda en llenar el tanque', Vtq.toLocaleString('es-VE') + ' L');
+
+  let d = '';
+  const linea = (t, v) => '<div class="totline"><span>' + t +
+                          '</span><span class="v">' + v + '</span></div>';
+  d += linea('Altura vertical a vencer', H0.toFixed(1) + ' m');
+  d += linea('Pérdida por fricción en la tubería', hf.toFixed(1) + ' m');
+  d += linea('<b>Altura manométrica total</b>', '<b>' + H.toFixed(1) + ' m</b>');
+  d += linea('Velocidad del agua en el tubo', vel.toFixed(2) + ' m/s');
+  d += linea('Potencia hidráulica (agua)', Math.round(Ph) + ' W');
+  d += linea('Potencia con ' + Math.round(efic*100) + ' % de eficiencia',
+             Math.round(Pm) + ' W');
+  document.getElementById('detalleBomba').innerHTML = d;
+
+  // --- Veredicto ---
+  const avisos = [];
+  if (vel > 2.5){
+    avisos.push('<b>El tubo es muy delgado para ese caudal</b> (agua a ' +
+      vel.toFixed(1) + ' m/s, por encima de 2,5). Eso dispara la fricción y ' +
+      'castiga la tubería con golpe de ariete. Sube un diámetro.');
+  } else if (vel < 0.4 && vel > 0){
+    avisos.push('El agua va muy lenta (' + vel.toFixed(2) + ' m/s): el tubo está ' +
+      'sobredimensionado y se te asentará sedimento. Podrías bajar un diámetro y ' +
+      'ahorrar en tubería.');
+  }
+  if (hf > H0){
+    avisos.push('<b>Estás gastando más energía en vencer la fricción (' +
+      hf.toFixed(1) + ' m) que en subir el agua (' + H0.toFixed(1) + ' m).</b> ' +
+      'Un tubo más grueso se paga solo en bomba más chica y menos corriente.');
+  }
+  if (H0 > 7) {
+    avisos.push('Si la bomba es de superficie, <b>no puede aspirar desde más de ' +
+      '~7 m por debajo</b>. Si el agua está más abajo, la bomba tiene que ir cerca ' +
+      'del agua (empujando), o hace falta una bomba sumergible.');
+  }
+
+  const v2 = document.getElementById('veredictoBomba');
+  let txt = '<p><b>Con estos números basta una bomba de ' + rec + ' HP.</b> ';
+  if (rec < 2){
+    txt += 'La bomba de <b>2 HP</b> que está cotizada (' +
+      (precioDe('bomba') != null ? usd(precioDe('bomba')) : '$174') +
+      ') sería <b>mucho más de lo necesario</b>: costaría de más al comprarla y ' +
+      'seguiría costando de más en electricidad cada vez que la enciendas. ' +
+      'Con una de ' + rec + ' HP haces el mismo trabajo.</p>';
+  } else if (rec === 2){
+    txt += 'La bomba de 2 HP cotizada encaja justo con esta necesidad.</p>';
+  } else {
+    txt += '⚠ Es <b>más de los 2 HP</b> cotizados: con esa bomba no subirías el ' +
+      'agua a ese caudal y altura. Baja el caudal, engrosa el tubo o busca ' +
+      'una bomba mayor.</p>';
+  }
+  if (avisos.length) txt += '<p>' + avisos.join('</p><p>') + '</p>';
+  txt += '<p class="hint" style="margin-bottom:0">Cálculo teórico con la fórmula ' +
+    'de Hazen-Williams para PVC. No incluye pérdidas en codos, llaves ni válvulas ' +
+    '— por eso el margen del 15 %. <b>Contrasta la cifra con la curva del ' +
+    'fabricante</b> antes de comprar: una bomba se elige por su curva caudal-altura, ' +
+    'no solo por los HP.</p>';
+  v2.innerHTML = txt;
+}
+
+/* --- Presión disponible por gravedad --- */
+const EMISORES = [
+  {nombre:'Cinta o microtubo de baja presión', min:2,  nota:'Lo más tolerante a poca altura.'},
+  {nombre:'Gotero normal (no compensado)',     min:5,  nota:'Estándar y barato. Exige líneas a nivel.'},
+  {nombre:'Gotero autocompensado',             min:10, nota:'Da lo mismo en pendiente. Lo ideal si alcanza.'},
+  {nombre:'Microaspersor',                     min:15, nota:'Moja el follaje: peor para hongos.'},
+  {nombre:'Aspersor / gallito',                min:20, nota:'El que ya está cotizado a $2,40.'},
+];
+
+function calcularGravedad(){
+  const h    = val('gAltura');
+  const perd = val('gPerdida');
+  const neta = Math.max(0, h - perd);
+  const bar  = neta * 0.0981;
+  const psi  = neta * 1.4223;
+
+  document.getElementById('hitosGravedad').innerHTML =
+    hito(neta.toFixed(1) + ' m', 'Presión útil en el gotero', 'columna de agua') +
+    hito(bar.toFixed(2) + ' bar', 'Equivalente en bar', psi.toFixed(1) + ' psi') +
+    hito(h.toFixed(1) + ' m', 'Altura bruta del tanque', 'menos ' + perd + ' m de pérdidas');
+
+  let t = '<thead><tr><th>Emisor</th><th class="num">Presión que pide</th>' +
+          '<th>¿Funciona con tu altura?</th></tr></thead><tbody>';
+  EMISORES.forEach(e => {
+    const ok = neta >= e.min;
+    t += '<tr' + (ok ? '' : ' class="falta"') + '>';
+    t += '<td><b>' + esc(e.nombre) + '</b><div class="hint">' + esc(e.nota) + '</div></td>';
+    t += '<td class="num">' + e.min + ' m<div class="hint">' +
+         (e.min*0.0981).toFixed(1) + ' bar</div></td>';
+    t += '<td>' + (ok
+      ? '<span class="tag mejor">✅ Sí</span>'
+      : '<span class="tag falta">❌ No</span> <span class="hint">faltan ' +
+        (e.min - neta).toFixed(1) + ' m de altura</span>') + '</td>';
+    t += '</tr>';
+  });
+  document.getElementById('tablaEmisores').innerHTML = t + '</tbody>';
+
+  const sirven = EMISORES.filter(e => neta >= e.min);
+  const v = document.getElementById('veredictoGravedad');
+  if (!sirven.length){
+    v.className = 'callout danger';
+    v.innerHTML = '<p style="margin:0"><b>Con ' + neta.toFixed(1) + ' m no alcanza ' +
+      'ni para el emisor más tolerante.</b> Hay que subir el tanque al menos a ' +
+      (EMISORES[0].min + perd).toFixed(1) + ' m sobre el cultivo, o renunciar a la ' +
+      'gravedad y regar con bomba.</p>';
+  } else {
+    const mejor = sirven[sirven.length - 1];
+    const aspersor = neta >= 20;
+    v.className = 'callout ok';
+    v.innerHTML = '<p><b>Con ' + neta.toFixed(1) + ' m de presión útil te funcionan ' +
+      sirven.length + ' de los ' + EMISORES.length + ' tipos</b>, hasta el ' +
+      '<b>' + esc(mejor.nombre.toLowerCase()) + '</b>.</p>' +
+      '<p style="margin-bottom:0">' + (aspersor
+        ? 'Te alcanzaría incluso para aspersores, pero <b>para cítrico sigue siendo ' +
+          'mejor el goteo</b>: gasta menos agua y no moja la hoja.'
+        : '<b>Los aspersores cotizados no van a funcionar por gravedad</b> — piden ' +
+          'unos 20 m de altura y tienes ' + neta.toFixed(1) + '. Es un argumento ' +
+          'más para ir a goteo.') + '</p>';
   }
 }
 
@@ -1258,7 +1660,7 @@ function aplicar(csv, origen, cuando){
   PRECIOS = aObjetos(parseCSV(csv));
   renderTablas();
   calcular();
-  precioDeVenta();   // rellena el precio de venta si el socio ya lo puso
+  preciosDeLaHoja();   // precio de venta y jornal, si el socio ya los puso
   proyectar();
 
   const est = document.getElementById('estado');
@@ -1341,7 +1743,7 @@ async function cargar(){
 
 /* Controles de la proyección. Se marca "tocado" lo que edita el usuario, para
    no pisárselo cuando lleguen datos de la hoja o cambie el presupuesto. */
-['pPlantas','pEscenario','pKgMaduro','pPrecio','pMerma','pGasto'].forEach(id => {
+['pPlantas','pEscenario','pKgMaduro','pPrecio','pMerma','pJornales','pPrecioJornal','pOtros'].forEach(id => {
   const el = document.getElementById(id);
   const alCambiar = () => {
     el.dataset.tocado = '1';
@@ -1352,6 +1754,20 @@ async function cargar(){
   el.addEventListener('input', alCambiar);
   el.addEventListener('change', alCambiar);
 });
+
+/* Controles de bombeo y gravedad. */
+['bAltura','bCaudal','bLongitud','bDiam','bEfic','bTanque'].forEach(id => {
+  const el = document.getElementById(id);
+  el.addEventListener('input', calcularBomba);
+  el.addEventListener('change', calcularBomba);
+});
+['gAltura','gPerdida'].forEach(id => {
+  const el = document.getElementById(id);
+  el.addEventListener('input', calcularGravedad);
+  el.addEventListener('change', calcularGravedad);
+});
+calcularBomba();
+calcularGravedad();
 
 ['nPlantas','marco','metodo','litros','autonomia','bomba'].forEach(id => {
   document.getElementById(id).addEventListener('input', calcular);
