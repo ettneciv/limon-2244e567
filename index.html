@@ -15,6 +15,9 @@
     --shadow:0 8px 26px rgba(30,50,20,.09); --radius:14px;
   }
   *{box-sizing:border-box}
+  /* Debe ir antes que cualquier regla con display: una clase con display propio
+     (.btnlink, .sinlink) le gana al [hidden]{display:none} del navegador. */
+  [hidden]{display:none !important}
   html{scroll-behavior:smooth}
   body{margin:0;background:var(--bg);color:var(--ink);
     font:16px/1.6 system-ui,-apple-system,"Segoe UI",Roboto,sans-serif}
