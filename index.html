@@ -74,6 +74,10 @@
     border-radius:999px;background:var(--brand-soft);color:var(--brand-dark)}
   .tag.falta{background:var(--danger-soft);color:var(--danger)}
   .tag.mejor{background:#e8f5ed;color:var(--ok)}
+  td.ok-c{background:#e8f5ed;color:#1d5936;font-weight:700;white-space:nowrap}
+  td.warn-c{background:#fdf8e8;color:#6b5510;font-weight:700;white-space:nowrap}
+  td.bad-c{background:var(--danger-soft);color:#7d2a22;font-weight:700;white-space:nowrap}
+  td.ok-c .hint,td.warn-c .hint,td.bad-c .hint{font-weight:500;color:inherit;opacity:.75}
 
   .status{display:flex;flex-wrap:wrap;align-items:center;gap:9px;
     padding:11px 14px;border-radius:11px;font-size:14px;margin:12px 0}
@@ -174,6 +178,8 @@
   <a href="#proyeccion">Proyección</a>
   <a href="#parcela">La parcela</a>
   <a href="#plantacion">Plantación</a>
+  <a href="#siembra">Cómo sembrar</a>
+  <a href="#niveles">Niveles de agua y suelo</a>
   <a href="#riego">Riego</a>
   <a href="#bombeo">Bombeo y gravedad</a>
   <a href="#sanidad">Sanidad</a>
@@ -521,6 +527,151 @@
   </div>
 </section>
 
+<!-- ============ CÓMO SEMBRAR ============ -->
+<section id="siembra">
+  <h2>Cómo sembrar cada planta</h2>
+  <p class="lead">La siembra decide si el árbol vive o se pudre en dos años. En
+     esta parcela el enemigo número uno no es la sequía: es el <b>agua estancada
+     en la raíz</b>.</p>
+
+  <div class="callout danger">
+    <p><b>Los tres errores que matan un cítrico injertado.</b> Los tres son
+      gratis de evitar y ninguno tiene arreglo después:</p>
+    <ol style="margin:8px 0 0;padding-left:20px">
+      <li><b>Enterrar el punto de injerto.</b> Si queda al ras o bajo tierra,
+        entra la gomosis (<i>Phytophthora</i>) y el árbol se pierde. Además la
+        planta echa raíces por encima del injerto y anulas el patrón que pagaste.</li>
+      <li><b>Hacer un hoyo profundo en suelo que drena mal.</b> Se convierte en
+        una cubeta que retiene agua alrededor de la raíz. Se pudre.</li>
+      <li><b>Echar estiércol fresco o abono químico en el fondo del hoyo.</b>
+        Quema las raíces nuevas justo cuando la planta está más débil.</li>
+    </ol>
+  </div>
+
+  <div class="card">
+    <h3 style="margin-top:0">El corte del hoyo, según cómo drene tu suelo</h3>
+    <div class="calc">
+      <div>
+        <label for="sDrenaje">¿Cómo drena el terreno?</label>
+        <select id="sDrenaje">
+          <option value="bueno">Bien — el agua se va rápido (arenoso)</option>
+          <option value="regular" selected>Regular — tarda unas horas</option>
+          <option value="malo">Mal — se encharca (arcilloso)</option>
+        </select>
+        <div class="hint">Se mide con la prueba del hoyo, explicada abajo.</div>
+      </div>
+      <div>
+        <label for="sHoyo">Lado del hoyo (cm)</label>
+        <input type="number" id="sHoyo" value="40" min="30" max="80" step="5">
+        <div class="hint">Lo habitual es 40 × 40 × 40 cm.</div>
+      </div>
+    </div>
+    <div class="chartwrap"><svg id="corteSiembra" class="chart" viewBox="0 0 760 420"
+         preserveAspectRatio="xMidYMid meet" role="img"
+         aria-label="Corte del hoyo de siembra"></svg></div>
+    <div class="callout" id="notaSiembra" style="margin-bottom:0"></div>
+  </div>
+
+  <h3>Paso a paso</h3>
+  <div class="grid c2">
+    <div class="card">
+      <h3 style="margin-top:0">Antes de sembrar</h3>
+      <ul class="clean" style="margin-top:0">
+        <li><b>Haz la prueba del drenaje.</b> Cava un hoyo, llénalo de agua, deja
+          que se vacíe y vuélvelo a llenar. Si la segunda vez tarda más de unas
+          horas en bajar, el suelo drena mal → <b>camellón obligatorio</b>.</li>
+        <li><b>Abre los hoyos con antelación</b> y déjalos airear unos días.</li>
+        <li><b>Separa la tierra</b>: la de arriba (más oscura y fértil) a un lado,
+          la del fondo al otro. La de arriba vuelve al fondo del hoyo.</li>
+        <li><b>Siembra al inicio de las lluvias</b> o en tiempo fresco, nunca en
+          el pico de calor del mediodía.</li>
+      </ul>
+    </div>
+    <div class="card">
+      <h3 style="margin-top:0">Al sembrar</h3>
+      <ul class="clean" style="margin-top:0">
+        <li><b>Revisa la raíz.</b> Si viene enrollada en espiral por la bolsa,
+          afloja o corta esas raíces: si no, estrangulan al árbol años después.</li>
+        <li><b>Quita la bolsa entera.</b> Ni siquiera el plástico "biodegradable".</li>
+        <li><b>Punto de injerto bien alto</b> — mínimo un palmo sobre la tierra.
+          Es el punto donde el tronco cambia de grosor o color.</li>
+        <li><b>Rellena con la tierra del propio sitio</b> mezclada con materia
+          orgánica <b>bien compostada</b>, nunca fresca.</li>
+        <li><b>Aprieta suave y riega mucho de una vez</b>: el agua asienta la
+          tierra y saca las bolsas de aire mejor que pisar.</li>
+      </ul>
+    </div>
+    <div class="card">
+      <h3 style="margin-top:0">Justo después</h3>
+      <ul class="clean" style="margin-top:0">
+        <li><b>Cobertura (mulch)</b> de paja, hojarasca o restos secos alrededor
+          — pero <b>sin tocar el tronco</b>, deja un anillo libre de un palmo.
+          Si el mulch toca la corteza, la pudre.</li>
+        <li><b>Pinta el tronco con cal</b>. En la costa el sol raja la corteza de
+          un arbolito joven; la cal blanca lo refleja. Es barato y funciona.</li>
+        <li><b>Tutor</b> amarrado flojo y en forma de ocho, para que el viento no
+          lo tumbe ni lo estrangule el amarre.</li>
+        <li><b>Gotero desde el día uno.</b> El primer año el riego es lo que
+          decide cuántas plantas prenden.</li>
+      </ul>
+    </div>
+    <div class="card">
+      <h3 style="margin-top:0">Qué echarle al suelo</h3>
+      <ul class="clean" style="margin-top:0">
+        <li><b>Materia orgánica compostada</b> mezclada con la tierra del sitio.
+          Mejora el suelo y retiene humedad.</li>
+        <li><b>Micorrizas.</b> El cítrico depende mucho de estos hongos para
+          absorber fósforo. Se aplican al sembrar, en la raíz.</li>
+        <li><b>Nada más, hasta tener el análisis de suelo.</b> Cal, yeso o
+          fertilizante de fondo solo si un análisis lo pide. Echar cal "por si
+          acaso" en suelo ya alcalino empeora las carencias de hierro y zinc.</li>
+      </ul>
+      <p class="hint">El abono de verdad empieza <b>después</b>, por fertirriego,
+        cuando la planta ya prendió.</p>
+    </div>
+  </div>
+
+  <h3>Estructuras que ayudan en esta parcela</h3>
+  <div class="grid c2">
+    <div class="card">
+      <h3 style="margin-top:0">🌊 Camellón o lomo</h3>
+      <p>La estructura más importante aquí. Es un lomo de tierra continuo a lo
+        largo de la hilera; el árbol va <b>encima</b>, no en el llano. Así la raíz
+        queda por encima del agua y el exceso escurre al callejón, lejos del
+        tronco.</p>
+      <p class="hint">Se hace con el mismo pase de maquinaria o a pala, y es
+        obligatorio si el suelo drena mal.</p>
+    </div>
+    <div class="card">
+      <h3 style="margin-top:0">🌬 Barrera rompevientos</h3>
+      <p>Están en la costa: el viento cargado de <b>salitre</b> quema las hojas y
+        reseca la planta. Una línea de árboles o arbustos resistentes en el lado
+        de donde pega el viento protege todo el huerto, y de paso reduce cuánta
+        agua se evapora.</p>
+    </div>
+    <div class="card">
+      <h3 style="margin-top:0">🪵 Tutor</h3>
+      <p>Una estaca al lado del arbolito los primeros años, con el amarre en
+        forma de ocho y <b>flojo</b>. Impide que el viento lo incline o le mueva
+        la raíz recién puesta, que es lo que impide que prenda.</p>
+    </div>
+    <div class="card">
+      <h3 style="margin-top:0">☂️ Sombra temporal</h3>
+      <p>Los primeros meses, media sombra ayuda al arbolito recién trasplantado a
+        no deshidratarse con el sol fuerte. Basta con algo sencillo por el lado
+        del sol de la tarde, y se retira cuando ya arrancó.</p>
+    </div>
+  </div>
+
+  <div class="callout">
+    <p><b>Lo que aún no sabemos y condiciona todo esto:</b> la profundidad y la
+      textura real del suelo de la parcela. El limón persa quiere suelo de más de
+      60 cm de profundidad y de textura franco-arenosa, con buen drenaje. Si al
+      cavar aparece roca o arcilla dura a poca profundidad, el camellón deja de
+      ser opcional y hay que replantear el marco de plantación.</p>
+  </div>
+</section>
+
 <!-- ============ RIEGO ============ -->
 <section id="riego">
   <h2>Riego — el equipo que ya tenemos cotizado</h2>
@@ -622,6 +773,10 @@
       </div>
     </div>
 
+    <div class="chartwrap"><svg id="esqBomba" class="chart" viewBox="0 0 760 340"
+         preserveAspectRatio="xMidYMid meet" role="img"
+         aria-label="Esquema del bombeo: bomba abajo, tanque arriba"></svg></div>
+
     <div class="hitos" id="hitosBomba"></div>
     <div class="totals" id="detalleBomba"></div>
     <div class="callout" id="veredictoBomba" style="margin-bottom:0"></div>
@@ -647,6 +802,29 @@
     <div class="hitos" id="hitosGravedad"></div>
     <div class="tablewrap"><table id="tablaEmisores"></table></div>
     <div class="callout" id="veredictoGravedad" style="margin-bottom:0"></div>
+  </div>
+
+  <div class="card">
+    <h3 style="margin-top:0">3 · Cómo bajaría el agua al huerto</h3>
+    <p>Plano aproximado del huerto con el número de plantas del presupuesto.
+      El tanque va en la parte alta y el agua baja sola por la tubería principal;
+      de ahí sale una línea de goteo por cada hilera.</p>
+    <div class="calc">
+      <div>
+        <label for="hSectores">Sectores de riego (turnos)</label>
+        <input type="number" id="hSectores" value="3" min="1" max="8" step="1">
+        <div class="hint">Con poca presión se riega un sector cada vez, por turnos.</div>
+      </div>
+      <div>
+        <label for="hFilas">Plantas por hilera</label>
+        <input type="number" id="hFilas" value="10" min="2" max="40" step="1">
+        <div class="hint">Cambia la forma del terreno. Se ajusta al número de plantas.</div>
+      </div>
+    </div>
+    <div class="chartwrap"><svg id="planoHuerto" class="chart" viewBox="0 0 760 496"
+         preserveAspectRatio="xMidYMid meet" role="img"
+         aria-label="Plano del huerto y recorrido del agua"></svg></div>
+    <div class="callout" id="notaPlano" style="margin-bottom:0"></div>
   </div>
 
   <h3>Ideas para el riego por gravedad</h3>
@@ -702,6 +880,108 @@
         o al atardecer, que es cuando menos se evapora — sin depender de que haya
         electricidad en ese momento.</p>
     </div>
+  </div>
+
+  <h3 id="niveles">Niveles que hay que buscar en el análisis</h3>
+  <p class="lead">Esto es lo que debe salir en el análisis de agua y de suelo.
+     Verde = sin problema · amarillo = se puede manejar, con cuidado ·
+     rojo = problema serio.</p>
+
+  <div class="card">
+    <h3 style="margin-top:0">Agua de riego</h3>
+    <div class="tablewrap"><table>
+      <thead><tr><th>Qué se mide</th><th>✅ Ideal</th><th>⚠️ Manejable</th>
+        <th>❌ Problema</th><th>Por qué importa</th></tr></thead>
+      <tbody>
+        <tr><td><b>pH</b></td>
+          <td class="ok-c">6,5 – 7,5</td><td class="warn-c">7,5 – 8,4</td>
+          <td class="bad-c">&lt; 6,0 o &gt; 8,4</td>
+          <td>Por encima de 7,5 se bloquean el hierro y el zinc, y se incrusta cal
+            en los goteros.</td></tr>
+        <tr><td><b>Salinidad — CE del agua</b><div class="hint">conductividad
+          eléctrica, en dS/m (= mmho/cm)</div></td>
+          <td class="ok-c">&lt; 1,0</td><td class="warn-c">1,0 – 1,7</td>
+          <td class="bad-c">&gt; 1,7</td>
+          <td><b>El parámetro decisivo aquí.</b> El cítrico es de los cultivos más
+            sensibles a la sal. Por encima de 1,7 se considera agua salina para
+            cítrico.</td></tr>
+        <tr><td><b>Cloruros</b></td>
+          <td class="ok-c">&lt; 4 meq/L<div class="hint">≈ 140 mg/L</div></td>
+          <td class="warn-c">4 – 10 meq/L<div class="hint">140 – 355 mg/L</div></td>
+          <td class="bad-c">&gt; 10 meq/L<div class="hint">&gt; 355 mg/L</div></td>
+          <td>Es el ion que más quema al cítrico. Se acumula en la hoja y provoca
+            quemadura de bordes y defoliación.</td></tr>
+        <tr><td><b>Sodio (RAS)</b><div class="hint">relación de adsorción de sodio</div></td>
+          <td class="ok-c">&lt; 3</td><td class="warn-c">3 – 9</td>
+          <td class="bad-c">&gt; 9</td>
+          <td>El sodio alto degrada la estructura del suelo: se compacta y deja de
+            drenar, que es justo lo que no queremos.</td></tr>
+        <tr><td><b>Bicarbonatos</b></td>
+          <td class="ok-c">&lt; 1,5 meq/L</td><td class="warn-c">1,5 – 8,5 meq/L</td>
+          <td class="bad-c">&gt; 8,5 meq/L</td>
+          <td>Son los que tapan los goteros con cal y obligan a inyectar ácido.</td></tr>
+      </tbody>
+    </table></div>
+  </div>
+
+  <div class="card">
+    <h3 style="margin-top:0">Suelo</h3>
+    <div class="tablewrap"><table>
+      <thead><tr><th>Qué se mide</th><th>✅ Ideal</th><th>⚠️ Manejable</th>
+        <th>❌ Problema</th><th>Por qué importa</th></tr></thead>
+      <tbody>
+        <tr><td><b>pH del suelo</b></td>
+          <td class="ok-c">6,0 – 7,0</td><td class="warn-c">5,5 – 7,5</td>
+          <td class="bad-c">&gt; 7,5 o &lt; 5,5</td>
+          <td>En suelo alcalino aparece la clorosis: hojas jóvenes amarillas con
+            las nervaduras verdes, por falta de hierro y zinc.</td></tr>
+        <tr><td><b>Salinidad del suelo — CEe</b><div class="hint">extracto de
+          saturación, en dS/m</div></td>
+          <td class="ok-c">&lt; 1,5</td><td class="warn-c">1,5 – 2,3</td>
+          <td class="bad-c">&gt; 2,3</td>
+          <td>A partir de 1,5 el árbol ya empieza a perder cosecha, aunque las
+            hojas todavía se vean bien.</td></tr>
+        <tr><td><b>Profundidad del suelo</b></td>
+          <td class="ok-c">&gt; 60 cm</td><td class="warn-c">40 – 60 cm</td>
+          <td class="bad-c">&lt; 40 cm</td>
+          <td>Menos de eso y la raíz no tiene dónde ir: hay que replantear el
+            marco y el camellón.</td></tr>
+        <tr><td><b>Textura</b></td>
+          <td class="ok-c">Franco-arenoso</td><td class="warn-c">Franco-arcilloso</td>
+          <td class="bad-c">Arcilla pesada</td>
+          <td>Lo que manda es que <b>drene</b>. La arcilla pesada encharca y trae
+            gomosis.</td></tr>
+      </tbody>
+    </table></div>
+  </div>
+
+  <div class="card">
+    <h3 style="margin-top:0">¿Cuánta cosecha te costaría la sal?</h3>
+    <p>Mete la salinidad que salga en el análisis del suelo y te dice cuánto
+      rendimiento se pierde, según la curva oficial de la FAO para limón.</p>
+    <div class="calc">
+      <div>
+        <label for="cSal">CEe medida en el suelo (dS/m)</label>
+        <input type="number" id="cSal" value="1.5" min="0" max="12" step="0.1">
+        <div class="hint">Si solo tienes la CE del agua, multiplícala por 1,5
+          para estimar la del suelo.</div>
+      </div>
+    </div>
+    <div class="hitos" id="hitosSal"></div>
+    <div class="callout" id="notaSal" style="margin-bottom:0"></div>
+  </div>
+
+  <div class="callout danger">
+    <p><b>El patrón que más produce es de los que peor aguantan la sal.</b>
+      En el estudio de rendimiento que usamos para la proyección, el limón
+      <b>Rugoso</b> fue el más productivo (215 kg/árbol a los 11 años). Pero en las
+      tablas de tolerancia a la salinidad, el Rugoso está <b>casi al final</b> de la
+      lista. El orden de tolerancia, de más a menos, es:</p>
+    <p style="margin-bottom:0"><b>Lima Rangpur = mandarino Cleopatra &gt; naranjo
+      agrio &gt; naranjo dulce = Swingle citrumelo &gt; limón Rugoso &gt;
+      Poncirus trifoliata</b></p>
+    <p>Es decir: si el agua sale salina, <b>elegir el patrón por rendimiento sería
+      un error caro</b>. Primero el análisis, después el patrón.</p>
   </div>
 
   <h3>¿Qué hay que agregarle al agua?</h3>
@@ -1261,6 +1541,7 @@ function calcular(){
   ULTIMO_CAPEX = total;
   const pP = document.getElementById('pPlantas');
   if (pP && !pP.dataset.tocado) { pP.value = n; proyectar(); }
+  dibujarPlano();   // el plano usa el nº de plantas y el marco de plantación
 
   // Nota de contexto: área, agua y lo que falta.
   const areaM2 = n * marco * marco;
@@ -1547,6 +1828,7 @@ function calcularBomba(){
   d += linea('Potencia con ' + Math.round(efic*100) + ' % de eficiencia',
              Math.round(Pm) + ' W');
   document.getElementById('detalleBomba').innerHTML = d;
+  dibujarEsquemaBomba(H0, L, Dmm, hf, hp, rec);
 
   // --- Veredicto ---
   const avisos = [];
@@ -1592,6 +1874,425 @@ function calcularBomba(){
     'fabricante</b> antes de comprar: una bomba se elige por su curva caudal-altura, ' +
     'no solo por los HP.</p>';
   v2.innerHTML = txt;
+}
+
+/* --- Esquema del bombeo: bomba abajo, tanque arriba --- */
+function dibujarEsquemaBomba(H0, L, Dmm, hf, hp, rec){
+  const svg = document.getElementById('esqBomba');
+  const W = 760, Hs = 340;
+  const yBase = 288, xIni = 96;
+
+  // Recorrido horizontal real (el tubo es la hipotenusa).
+  const imposible = L <= H0;
+  const run = imposible ? 0 : Math.sqrt(L*L - H0*H0);
+
+  // Ángulo real, limitado para que el dibujo se lea bien.
+  const angReal = Math.atan2(H0, run || 0.001);
+  const ang = Math.max(14*Math.PI/180, Math.min(62*Math.PI/180, angReal));
+  let dx = 470, dy = dx * Math.tan(ang);
+  if (dy > 196){ dy = 196; dx = dy / Math.tan(ang); }
+  const xFin = xIni + dx, yTope = yBase - dy;
+
+  let s = '';
+  // Cielo y cerro
+  s += `<rect x="0" y="0" width="${W}" height="${Hs}" fill="#eef4f7"/>`;
+  s += `<path d="M0,${yBase+52} L0,${yBase} L${xIni},${yBase} L${xFin},${yTope} ` +
+       `L${W},${yTope} L${W},${yBase+52} Z" fill="#e2ead8" stroke="#c3d2b3"/>`;
+  s += `<path d="M${xIni},${yBase} L${xFin},${yTope}" stroke="#a8bd91" stroke-width="3" fill="none"/>`;
+
+  // Fuente de agua abajo
+  s += `<rect x="16" y="${yBase+4}" width="72" height="44" rx="6" fill="#bfd9e8" stroke="#7ea9c4"/>`;
+  s += `<text class="lbl" x="52" y="${yBase+30}" text-anchor="middle">fuente</text>`;
+
+  // Bomba
+  s += `<rect x="${xIni-30}" y="${yBase-26}" width="60" height="28" rx="6" ` +
+       `fill="#355917" stroke="#223a0f"/>`;
+  s += `<circle cx="${xIni}" cy="${yBase-12}" r="8" fill="#a8c97f"/>`;
+  s += `<text x="${xIni}" y="${yBase+18}" text-anchor="middle" ` +
+       `style="font:700 12px system-ui;fill:#223a0f">BOMBA</text>`;
+  s += `<text x="${xIni}" y="${yBase+32}" text-anchor="middle" ` +
+       `style="font:700 13px system-ui;fill:#4a7c22">${rec} HP</text>`;
+  s += `<path d="M88,${yBase+10} L${xIni-14},${yBase+10} L${xIni-14},${yBase-6}" ` +
+       `stroke="#7ea9c4" stroke-width="4" fill="none"/>`;
+
+  // Tubería (la manguera)
+  s += `<path d="M${xIni},${yBase-26} L${xIni},${yBase-40} L${xFin-10},${yTope-30}" ` +
+       `stroke="#4a7c22" stroke-width="6" fill="none" stroke-linejoin="round"/>`;
+
+  // Flechas de subida sobre el tubo
+  for (let i = 1; i <= 3; i++){
+    const t = i/4;
+    const px = xIni + (xFin-10-xIni)*t, py = (yBase-40) + (yTope-30-(yBase-40))*t;
+    s += `<circle cx="${px}" cy="${py}" r="7" fill="#fff" stroke="#4a7c22" stroke-width="2"/>`;
+    s += `<path d="M${px-3},${py+2.5} L${px},${py-3} L${px+3},${py+2.5}" ` +
+         `stroke="#4a7c22" stroke-width="2" fill="none"/>`;
+  }
+
+  // Tanque arriba
+  const tx = xFin - 4, ty = yTope - 74;
+  s += `<rect x="${tx-6}" y="${ty+42}" width="8" height="34" fill="#9aa894"/>`;
+  s += `<rect x="${tx+52}" y="${ty+42}" width="8" height="34" fill="#9aa894"/>`;
+  s += `<rect x="${tx-14}" y="${ty}" width="82" height="46" rx="8" fill="#cfe0ef" stroke="#7ea9c4" stroke-width="2"/>`;
+  s += `<rect x="${tx-14}" y="${ty+16}" width="82" height="30" rx="6" fill="#a8cbe4"/>`;
+  s += `<text x="${tx+27}" y="${ty-8}" text-anchor="middle" ` +
+       `style="font:700 12px system-ui;fill:#2b4a5e">TANQUE ALTO</text>`;
+
+  // Cota de altura
+  const xc = xFin + 74;
+  s += `<line x1="${xFin}" y1="${yTope}" x2="${xc+16}" y2="${yTope}" stroke="#8a9a80" stroke-dasharray="4 3"/>`;
+  s += `<line x1="${xIni}" y1="${yBase}" x2="${xc+16}" y2="${yBase}" stroke="#8a9a80" stroke-dasharray="4 3"/>`;
+  s += `<line x1="${xc}" y1="${yTope}" x2="${xc}" y2="${yBase}" stroke="#a83a2f" stroke-width="2"/>`;
+  s += `<path d="M${xc-4},${yTope+7} L${xc},${yTope} L${xc+4},${yTope+7}" stroke="#a83a2f" stroke-width="2" fill="none"/>`;
+  s += `<path d="M${xc-4},${yBase-7} L${xc},${yBase} L${xc+4},${yBase-7}" stroke="#a83a2f" stroke-width="2" fill="none"/>`;
+  s += `<text x="${xc+8}" y="${(yTope+yBase)/2 - 4}" ` +
+       `style="font:700 13px system-ui;fill:#a83a2f">${H0} m</text>`;
+  s += `<text x="${xc+8}" y="${(yTope+yBase)/2 + 11}" class="lbl">de alto</text>`;
+
+  // Etiqueta de la manguera, sobre el tubo
+  const mx = (xIni+xFin)/2, my = (yBase-40 + yTope-30)/2;
+  s += `<rect x="${mx-84}" y="${my-40}" width="168" height="34" rx="8" fill="#fff" ` +
+       `stroke="#c3d2b3"/>`;
+  s += `<text x="${mx}" y="${my-25}" text-anchor="middle" ` +
+       `style="font:700 12px system-ui;fill:#355917">manguera ${L} m · ø ${Dmm} mm</text>`;
+  s += `<text x="${mx}" y="${my-11}" text-anchor="middle" class="lbl">` +
+       `pierde ${hf.toFixed(1)} m por fricción</text>`;
+
+  // Salida por gravedad hacia el huerto
+  s += `<path d="M${tx+27},${ty+46} L${tx+27},${yTope+4} L${W-58},${yTope+4} L${W-58},${yTope+44}" ` +
+       `stroke="#2e7d4f" stroke-width="5" fill="none" stroke-linejoin="round"/>`;
+  s += `<path d="M${W-63},${yTope+36} L${W-58},${yTope+46} L${W-53},${yTope+36}" ` +
+       `stroke="#2e7d4f" stroke-width="3" fill="none"/>`;
+  s += `<text x="${W-58}" y="${yTope+62}" text-anchor="middle" class="lbl" ` +
+       `style="font-weight:700;fill:#2e7d4f">al huerto</text>`;
+  s += `<text x="${W-58}" y="${yTope+75}" text-anchor="middle" class="lbl">por gravedad</text>`;
+
+  // Resultado
+  s += `<rect x="16" y="16" width="248" height="52" rx="10" fill="#355917"/>`;
+  s += `<text x="30" y="38" style="font:600 12px system-ui;fill:#cfe0b8">` +
+       `POTENCIA MÍNIMA NECESARIA</text>`;
+  s += `<text x="30" y="60" style="font:800 20px system-ui;fill:#fff">` +
+       `${hp.toFixed(2)} HP  →  comprar ${rec} HP</text>`;
+
+  if (imposible){
+    s += `<rect x="16" y="76" width="420" height="30" rx="8" fill="#fbeae8" stroke="#a83a2f"/>`;
+    s += `<text x="28" y="96" style="font:700 12px system-ui;fill:#a83a2f">` +
+         `⚠ La manguera (${L} m) no puede ser más corta que la altura (${H0} m)</text>`;
+  }
+
+  svg.innerHTML = s;
+}
+
+/* --- Plano del huerto y bajada del agua por gravedad --- */
+function dibujarPlano(){
+  const svg = document.getElementById('planoHuerto');
+  if (!svg) return;
+  const N        = Math.max(1, parseInt(document.getElementById('nPlantas').value) || 0);
+  const marco    = parseFloat(document.getElementById('marco').value) || 5;
+  const sectores = Math.max(1, parseInt(document.getElementById('hSectores').value) || 1);
+  const porHilera= Math.max(2, parseInt(document.getElementById('hFilas').value) || 10);
+  const hileras  = Math.ceil(N / porHilera);
+
+  const W = 760, H = 496;
+  const x0 = 150, x1 = 706, yTop = 118, yBot = 418;
+  const pasoX = (x1 - x0) / Math.max(1, porHilera - 1);
+  const pasoY = (yBot - yTop) / Math.max(1, hileras - 1);
+  const r = Math.max(2.5, Math.min(9, pasoY * 0.30, pasoX * 0.30));
+
+  const COLOR = ['#4a7c22', '#7fae3c', '#2e7d4f', '#a8c97f', '#5c8f2a', '#8fbf5a', '#356b2e', '#b7d18e'];
+  let s = '';
+
+  s += `<rect x="0" y="0" width="${W}" height="${H}" fill="#f7faf3"/>`;
+  // Terreno
+  s += `<rect x="${x0-46}" y="${yTop-42}" width="${x1-x0+96}" height="${yBot-yTop+94}" ` +
+       `rx="12" fill="#eef4e6" stroke="#c3d2b3" stroke-dasharray="6 4"/>`;
+  s += `<text x="${x0-40}" y="${yTop-52}" class="lbl" style="font-weight:700">` +
+       `PARTE ALTA — aquí va el tanque</text>`;
+
+  // Tanque
+  s += `<rect x="30" y="30" width="96" height="52" rx="9" fill="#cfe0ef" stroke="#7ea9c4" stroke-width="2"/>`;
+  s += `<rect x="30" y="52" width="96" height="30" rx="7" fill="#a8cbe4"/>`;
+  s += `<text x="78" y="22" text-anchor="middle" style="font:700 12px system-ui;fill:#2b4a5e">TANQUE</text>`;
+  s += `<text x="78" y="72" text-anchor="middle" style="font:700 11px system-ui;fill:#2b4a5e">agua arriba</text>`;
+
+  // Filtro y llave general
+  s += `<circle cx="78" cy="104" r="13" fill="#fff" stroke="#4a7c22" stroke-width="2"/>`;
+  s += `<text x="78" y="108" text-anchor="middle" style="font:700 10px system-ui;fill:#4a7c22">F</text>`;
+  s += `<text x="98" y="108" class="lbl">filtro</text>`;
+
+  // Tubería principal (baja por la izquierda)
+  const xMain = 108;
+  s += `<path d="M78,82 L78,91 M78,117 L78,${yTop-16} L${xMain},${yTop-16} ` +
+       `L${xMain},${yBot+16}" stroke="#2b6ea8" stroke-width="6" fill="none" stroke-linejoin="round"/>`;
+  s += `<text x="${xMain-8}" y="${(yTop+yBot)/2}" text-anchor="middle" class="lbl" ` +
+       `transform="rotate(-90 ${xMain-8} ${(yTop+yBot)/2})" ` +
+       `style="font-weight:700;fill:#2b6ea8">TUBERÍA PRINCIPAL</text>`;
+
+  // Flechas de bajada
+  for (let i = 1; i <= 3; i++){
+    const py = yTop + (yBot - yTop) * i/4;
+    s += `<path d="M${xMain-5},${py-6} L${xMain},${py+4} L${xMain+5},${py-6}" ` +
+         `stroke="#2b6ea8" stroke-width="3" fill="none"/>`;
+  }
+
+  // Hileras
+  let dibujadas = 0;
+  for (let f = 0; f < hileras; f++){
+    const y = hileras === 1 ? (yTop+yBot)/2 : yTop + f * pasoY;
+    const sec = Math.floor(f / Math.ceil(hileras / sectores));
+    const col = COLOR[sec % COLOR.length];
+    const enEsta = Math.min(porHilera, N - f * porHilera);
+    if (enEsta <= 0) break;
+    const xFinL = x0 + (enEsta - 1) * pasoX;
+
+    // Llave del sector al inicio de la hilera
+    s += `<line x1="${xMain}" y1="${y}" x2="${x0 - 14}" y2="${y}" stroke="${col}" stroke-width="3"/>`;
+    // Línea de goteo
+    s += `<line x1="${x0-14}" y1="${y}" x2="${xFinL + 12}" y2="${y}" stroke="${col}" ` +
+         `stroke-width="2.5" stroke-dasharray="1 5" stroke-linecap="round"/>`;
+    // Purga al final
+    s += `<circle cx="${xFinL+16}" cy="${y}" r="3" fill="none" stroke="${col}" stroke-width="1.5"/>`;
+
+    for (let p = 0; p < enEsta; p++){
+      const x = x0 + p * pasoX;
+      s += `<circle cx="${x}" cy="${y}" r="${r}" fill="${col}" opacity=".92"/>`;
+      dibujadas++;
+    }
+  }
+
+  // Cotas del terreno
+  const anchoM = ((porHilera - 1) * marco).toFixed(0);
+  const largoM = ((hileras - 1) * marco).toFixed(0);
+  s += `<line x1="${x0}" y1="${yBot+40}" x2="${x1}" y2="${yBot+40}" stroke="#8a9a80"/>`;
+  s += `<path d="M${x0+7},${yBot+36} L${x0},${yBot+40} L${x0+7},${yBot+44}" stroke="#8a9a80" fill="none"/>`;
+  s += `<path d="M${x1-7},${yBot+36} L${x1},${yBot+40} L${x1-7},${yBot+44}" stroke="#8a9a80" fill="none"/>`;
+  s += `<text x="${(x0+x1)/2}" y="${yBot+56}" text-anchor="middle" class="lbl">` +
+       `${anchoM} m · ${porHilera} plantas por hilera</text>`;
+  s += `<text x="${x1+34}" y="${(yTop+yBot)/2}" text-anchor="middle" class="lbl" ` +
+       `transform="rotate(90 ${x1+34} ${(yTop+yBot)/2})">${largoM} m · ${hileras} hileras</text>`;
+
+  // Leyenda de sectores
+  let lx = 150;
+  s += `<text x="${lx}" y="${yTop-58}" class="lbl" style="font-weight:700">SECTORES (se riegan por turnos):</text>`;
+  for (let i = 0; i < sectores; i++){
+    const cx2 = lx + 232 + i * 62;
+    s += `<rect x="${cx2}" y="${yTop-70}" width="14" height="14" rx="3" fill="${COLOR[i % COLOR.length]}"/>`;
+    s += `<text x="${cx2+19}" y="${yTop-58}" class="lbl">${i+1}</text>`;
+  }
+
+  svg.innerHTML = s;
+
+  const areaM2 = (porHilera - 1) * marco * (hileras - 1) * marco;
+  document.getElementById('notaPlano').innerHTML =
+    '<b>' + dibujadas + ' plantas</b> en <b>' + hileras + ' hileras</b> de hasta ' +
+    porHilera + ', a ' + marco + ' m de marco: ocupan unos <b>' +
+    Math.round(areaM2).toLocaleString('es-VE') + ' m²</b> (' + (areaM2/10000).toFixed(2) +
+    ' ha), sin contar los pasillos de acceso.<br><br>' +
+    'El agua sale del tanque, pasa por el <b>filtro</b>, baja por la <b>tubería ' +
+    'principal</b> y entra a cada hilera por una llave. Cada hilera lleva su ' +
+    '<b>línea de goteo</b> (los puntos) y termina en una <b>purga</b> para poder ' +
+    'lavar el sedimento. Se abre <b>un sector cada vez</b>: con gravedad no hay ' +
+    'presión para regar todo junto.<br><br>' +
+    '⚠ Las hileras deben ir <b>siguiendo la curva de nivel</b> (todas a la misma ' +
+    'altura). Si una línea baja en pendiente, los goteros de abajo botan más agua ' +
+    'que los de arriba.';
+}
+
+/* --- Pérdida de cosecha por salinidad ---
+   Curva FAO para limón (Citrus limon): por debajo de 1,5 dS/m de CEe no hay
+   pérdida; por encima se pierde 12,8 % por cada dS/m adicional. La lima
+   (Citrus aurantiifolia) está clasificada como sensible pero sin cifras
+   propias, así que se usa el limón como referencia más cercana. */
+const SAL_UMBRAL = 1.5, SAL_PENDIENTE = 12.8;
+
+function calcularSal(){
+  const ce = parseFloat(document.getElementById('cSal').value) || 0;
+  const perdida = Math.max(0, Math.min(100, (ce - SAL_UMBRAL) * SAL_PENDIENTE));
+  const queda = 100 - perdida;
+
+  let nivel, color;
+  if (ce <= SAL_UMBRAL)      { nivel = 'Sin pérdida';        color = 'var(--ok)'; }
+  else if (perdida <= 10)    { nivel = 'Pérdida leve';       color = '#6b5510'; }
+  else if (perdida <= 25)    { nivel = 'Pérdida importante'; color = '#b4651a'; }
+  else                       { nivel = 'Pérdida grave';      color = 'var(--danger)'; }
+
+  document.getElementById('hitosSal').innerHTML =
+    hito(perdida.toFixed(0) + ' %', 'Cosecha que se pierde', nivel) +
+    hito(queda.toFixed(0) + ' %', 'Cosecha que te queda', 'de lo que daría sin sal') +
+    hito(ce.toFixed(1), 'CEe medida (dS/m)', 'umbral del limón: ' + SAL_UMBRAL);
+
+  const caja = document.getElementById('notaSal');
+  let t;
+  if (ce <= SAL_UMBRAL){
+    caja.className = 'callout ok';
+    t = '<p style="margin:0">✅ <b>Por debajo del umbral.</b> A esta salinidad el ' +
+        'limón no pierde cosecha. Es el escenario que queremos confirmar con el ' +
+        'análisis.</p>';
+  } else {
+    caja.className = 'callout' + (perdida > 25 ? ' danger' : '');
+    t = '<p><b>Con ' + ce.toFixed(1) + ' dS/m se pierde alrededor del ' +
+        perdida.toFixed(0) + ' % de la cosecha</b> frente a un suelo sin sal. ';
+    const proy = PRECIOS.length ? null : null;
+    t += 'Sobre la proyección, eso convertiría un árbol maduro de 55 kg en uno de ' +
+         (55 * queda / 100).toFixed(0) + ' kg.</p>';
+    t += '<p style="margin-bottom:0">Qué se puede hacer: <b>patrón tolerante</b> ' +
+         '(lo primero y lo más eficaz), <b>fracción de lavado</b> — regar algo de ' +
+         'más para arrastrar la sal por debajo de la raíz, que exige buen drenaje — ' +
+         'y evitar mojar la hoja, o sea <b>goteo y no aspersión</b>.</p>';
+  }
+  caja.innerHTML = t;
+}
+
+/* --- Corte del hoyo de siembra --- */
+const DRENAJE = {
+  bueno:   {alza: 0,  cam: 0,  txt:'A ras del suelo',        col:'#2e7d4f'},
+  regular: {alza: 10, cam: 14, txt:'10 cm sobre el suelo',   col:'#c9a227'},
+  malo:    {alza: 30, cam: 40, txt:'Camellón de 30–40 cm',   col:'#a83a2f'},
+};
+
+function dibujarCorte(){
+  const svg = document.getElementById('corteSiembra');
+  if (!svg) return;
+  const modo = document.getElementById('sDrenaje').value;
+  const lado = parseFloat(document.getElementById('sHoyo').value) || 40;
+  const d = DRENAJE[modo];
+
+  const W = 760, H = 420;
+  const esc = 2.2;                       // px por cm
+  const ySuelo = 250;                    // nivel natural del terreno
+  const cx = 340;                        // eje del árbol
+  const alza = d.alza * esc;             // cuánto sube el cuello sobre el suelo
+  const yCuello = ySuelo - alza;         // base del tronco
+  const anchoHoyo = lado * esc, profHoyo = lado * esc;
+
+  let s = '';
+  s += `<rect x="0" y="0" width="${W}" height="${H}" fill="#f2f7ee"/>`;
+  s += `<rect x="0" y="${ySuelo}" width="${W}" height="${H-ySuelo}" fill="#e0d3bd"/>`;
+  s += `<rect x="0" y="${ySuelo+profHoyo+16}" width="${W}" ` +
+       `height="${Math.max(0, H - (ySuelo+profHoyo+16))}" fill="#cbbba0"/>`;
+
+  // Camellón
+  if (d.cam > 0){
+    const ac = anchoHoyo * 2.3, hc = d.cam * esc;
+    s += `<path d="M${cx-ac/2},${ySuelo} Q${cx-ac/3.4},${ySuelo-hc} ${cx},${ySuelo-hc} ` +
+         `Q${cx+ac/3.4},${ySuelo-hc} ${cx+ac/2},${ySuelo} Z" fill="#e8dcc7" stroke="#c3b195"/>`;
+    s += `<text x="${cx+ac/2+10}" y="${ySuelo-hc/2}" class="lbl" style="font-weight:700;fill:${d.col}">` +
+         `camellón</text>`;
+  }
+
+  // Hoyo relleno
+  s += `<rect x="${cx-anchoHoyo/2}" y="${ySuelo}" width="${anchoHoyo}" height="${profHoyo}" ` +
+       `fill="#d8c7a8" stroke="#b09b78" stroke-dasharray="5 4"/>`;
+  s += `<text x="${cx}" y="${ySuelo+profHoyo-8}" text-anchor="middle" class="lbl">` +
+       `tierra del sitio + compost</text>`;
+
+  // Cepellón y raíces
+  s += `<ellipse cx="${cx}" cy="${yCuello+30}" rx="34" ry="26" fill="#9c7b4f" opacity=".85"/>`;
+  for (let i=-3;i<=3;i++){
+    s += `<path d="M${cx},${yCuello+24} q${i*16},${22} ${i*30},${44}" stroke="#8a6a41" ` +
+         `stroke-width="2" fill="none" opacity=".8"/>`;
+  }
+
+  // Tronco e injerto
+  s += `<rect x="${cx-6}" y="${yCuello-96}" width="12" height="${96+8}" rx="4" fill="#8d6b46"/>`;
+  const yInj = yCuello - 46;
+  s += `<path d="M${cx-9},${yInj} q9,-7 18,0" stroke="#5d4429" stroke-width="3" fill="none"/>`;
+  s += `<circle cx="${cx}" cy="${yInj}" r="13" fill="none" stroke="#a83a2f" stroke-width="2.5"/>`;
+  s += `<line x1="${cx+13}" y1="${yInj}" x2="${cx+92}" y2="${yInj-24}" stroke="#a83a2f" stroke-width="1.5"/>`;
+  s += `<rect x="${cx+92}" y="${yInj-44}" width="196" height="40" rx="8" fill="#fbeae8" stroke="#a83a2f"/>`;
+  s += `<text x="${cx+102}" y="${yInj-28}" style="font:700 12px system-ui;fill:#a83a2f">` +
+       `PUNTO DE INJERTO</text>`;
+  s += `<text x="${cx+102}" y="${yInj-13}" style="font:600 11px system-ui;fill:#7d2a22">` +
+       `nunca enterrado — un palmo de aire</text>`;
+
+  // Copa
+  s += `<circle cx="${cx}" cy="${yCuello-118}" r="34" fill="#4a7c22" opacity=".9"/>`;
+  s += `<circle cx="${cx-26}" cy="${yCuello-100}" r="22" fill="#5c8f2a" opacity=".9"/>`;
+  s += `<circle cx="${cx+27}" cy="${yCuello-102}" r="21" fill="#5c8f2a" opacity=".9"/>`;
+
+  // Cal en el tronco
+  s += `<rect x="${cx-7}" y="${yCuello-30}" width="14" height="30" rx="3" fill="#fff" opacity=".85"/>`;
+  s += `<line x1="${cx-7}" y1="${yCuello-16}" x2="${cx-96}" y2="${yCuello-6}" stroke="#7a8a72" stroke-width="1.2"/>`;
+  s += `<text x="${cx-104}" y="${yCuello-4}" text-anchor="end" class="lbl">tronco pintado con cal</text>`;
+
+  // Mulch, con hueco junto al tronco
+  const yM = yCuello - 2;
+  [[-1],[1]].forEach(([sg])=>{
+    s += `<rect x="${cx + sg*22 - (sg<0?70:0)}" y="${yM}" width="70" height="9" rx="4" ` +
+         `fill="#b99b6a"/>`;
+  });
+  s += `<line x1="${cx-22}" y1="${yM+4}" x2="${cx+22}" y2="${yM+4}" stroke="#a83a2f" stroke-width="2" stroke-dasharray="3 3"/>`;
+  s += `<line x1="${cx-60}" y1="${yM+30}" x2="${cx-14}" y2="${yM+8}" stroke="#7a8a72" stroke-width="1.2"/>`;
+  s += `<text x="${cx-64}" y="${yM+36}" text-anchor="end" class="lbl">` +
+       `cobertura, sin tocar el tronco</text>`;
+
+  // Tutor
+  s += `<line x1="${cx+46}" y1="${yCuello-108}" x2="${cx+46}" y2="${yCuello+34}" ` +
+       `stroke="#a58253" stroke-width="5"/>`;
+  s += `<path d="M${cx+4},${yCuello-66} q21,-8 42,0" stroke="#6b7a63" stroke-width="2" fill="none"/>`;
+  s += `<text x="${cx+56}" y="${yCuello+22}" class="lbl">tutor</text>`;
+
+  // Gotero
+  s += `<path d="M${cx-120},${yCuello-150} L${cx-120},${yM-6}" stroke="#2b6ea8" stroke-width="4" fill="none"/>`;
+  s += `<circle cx="${cx-120}" cy="${yM-2}" r="4" fill="#2b6ea8"/>`;
+  s += `<text x="${cx-130}" y="${yM+14}" text-anchor="end" class="lbl" style="fill:#2b6ea8;font-weight:700">gotero</text>`;
+
+  // Nivel del suelo
+  s += `<line x1="0" y1="${ySuelo}" x2="${W}" y2="${ySuelo}" stroke="#9c8a6d" stroke-width="2"/>`;
+  s += `<text x="16" y="${ySuelo-8}" class="lbl">nivel natural del terreno</text>`;
+
+  // Cota de alzado
+  if (alza > 0){
+    const xa = cx - 150;
+    s += `<line x1="${xa}" y1="${ySuelo}" x2="${xa}" y2="${yCuello}" stroke="${d.col}" stroke-width="2"/>`;
+    s += `<path d="M${xa-4},${ySuelo-7} L${xa},${ySuelo} L${xa+4},${ySuelo-7}" stroke="${d.col}" stroke-width="2" fill="none"/>`;
+    s += `<path d="M${xa-4},${yCuello+7} L${xa},${yCuello} L${xa+4},${yCuello+7}" stroke="${d.col}" stroke-width="2" fill="none"/>`;
+    s += `<text x="${xa-8}" y="${(ySuelo+yCuello)/2+4}" text-anchor="end" ` +
+         `style="font:700 12px system-ui;fill:${d.col}">${d.alza} cm</text>`;
+  }
+
+  // Cota del hoyo
+  s += `<line x1="${cx-anchoHoyo/2}" y1="${ySuelo+profHoyo+12}" x2="${cx+anchoHoyo/2}" y2="${ySuelo+profHoyo+12}" stroke="#8a7a5d"/>`;
+  s += `<text x="${cx}" y="${ySuelo+profHoyo+28}" text-anchor="middle" class="lbl">` +
+       `${lado} × ${lado} × ${lado} cm</text>`;
+
+  // Flechas de escurrimiento
+  if (d.cam > 0){
+    [-1,1].forEach(sg=>{
+      const xf = cx + sg*(anchoHoyo*1.5);
+      s += `<path d="M${xf},${ySuelo-26} q${sg*16},14 ${sg*24},26" stroke="#2b6ea8" ` +
+           `stroke-width="2.5" fill="none"/>`;
+      s += `<path d="M${xf+sg*16},${ySuelo+2} l${sg*9},-2 l${-sg*3},9" stroke="#2b6ea8" stroke-width="2.5" fill="none"/>`;
+    });
+    s += `<text x="${cx + anchoHoyo*1.9}" y="${ySuelo+26}" class="lbl" style="fill:#2b6ea8">` +
+         `el agua escurre lejos de la raíz</text>`;
+  }
+
+  // Encabezado
+  s += `<rect x="16" y="16" width="330" height="46" rx="9" fill="${d.col}"/>`;
+  s += `<text x="30" y="35" style="font:600 11.5px system-ui;fill:#fff;opacity:.85">` +
+       `DRENAJE ${modo.toUpperCase()} — SIEMBRA ASÍ:</text>`;
+  s += `<text x="30" y="54" style="font:800 15px system-ui;fill:#fff">${d.txt}</text>`;
+
+  svg.innerHTML = s;
+
+  const CONSEJO = {
+    bueno: 'Con buen drenaje puedes sembrar prácticamente a ras, cuidando solo que ' +
+      'el punto de injerto quede bien alto. Aun así, <b>un poco de alzado no ' +
+      'estorba</b>: la tierra del hoyo se asienta con el tiempo y el árbol baja.',
+    regular: 'Siembra el arbolito <b>unos 10 cm por encima</b> del nivel natural. ' +
+      'Es el caso más común y el alzado es barato: cuesta una palada y evita la ' +
+      'pudrición de raíz.',
+    malo: 'Suelo que se encharca: <b>camellón obligatorio</b>, de 30 a 40 cm, con el ' +
+      'árbol encima del lomo. No cabe otra opción — un hoyo profundo en arcilla es ' +
+      'una cubeta, y el cítrico se pudre. Si además aparece arcilla dura o roca a ' +
+      'poca profundidad, hay que replantear el marco de plantación.',
+  };
+  document.getElementById('notaSiembra').innerHTML =
+    '<p><b>' + DRENAJE[modo].txt + '.</b> ' + CONSEJO[modo] + '</p>' +
+    '<p style="margin-bottom:0">El <b>punto de injerto</b> va siempre bien separado ' +
+    'del suelo: es la puerta de entrada de la gomosis. Se recomienda que el injerto ' +
+    'venga alto de vivero — por encima de 30 cm — justo para que al sembrar no ' +
+    'quede cerca de la tierra. <b>Compruébalo al comprar la planta.</b></p>';
 }
 
 /* --- Presión disponible por gravedad --- */
@@ -1766,8 +2467,24 @@ async function cargar(){
   el.addEventListener('input', calcularGravedad);
   el.addEventListener('change', calcularGravedad);
 });
+['hSectores','hFilas'].forEach(id => {
+  const el = document.getElementById(id);
+  el.addEventListener('input', dibujarPlano);
+  el.addEventListener('change', dibujarPlano);
+});
+['sDrenaje','sHoyo'].forEach(id => {
+  const el = document.getElementById(id);
+  el.addEventListener('input', dibujarCorte);
+  el.addEventListener('change', dibujarCorte);
+});
+dibujarCorte();
+const elSal = document.getElementById('cSal');
+elSal.addEventListener('input', calcularSal);
+elSal.addEventListener('change', calcularSal);
+calcularSal();
 calcularBomba();
 calcularGravedad();
+dibujarPlano();
 
 ['nPlantas','marco','metodo','litros','autonomia','bomba'].forEach(id => {
   document.getElementById(id).addEventListener('input', calcular);
